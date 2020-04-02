@@ -5,3 +5,6 @@ reports
 Sandbox-Optimization
 README.md
 main.py
+__pycache__
+env
+Dockerfile
