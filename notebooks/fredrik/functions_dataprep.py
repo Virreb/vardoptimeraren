@@ -9,7 +9,7 @@ region_keys = {'Region Stockholm': 'Stockholm','Region Sörmland': 'Sörmland',
                  'Region Västmanland': 'Västmanland', 'Region Dalarna': 'Dalarna',
                  'Region Gävleborg': 'Gävleborg', 'Region Västernorrland': 'Västernorrland',
                  'Region Jämtland Härjedalen': 'Jämtland_Härjedalen', 'Region Västerbotten': 'Västerbotten',
-                 'Region Norrbotten': 'Norrbotten', 'Region Uppsala': 'Uppsala'
+                 'Region Norrbotten': 'Norrbotten', 'Region Uppsala': 'Uppsala', 'Region Gotland': 'Gotland'
                 }
 
 def get_cases_per_day_and_region(cases, region):
@@ -28,7 +28,6 @@ def get_cases_per_day_and_region(cases, region):
 
 def create_dataframe_per_region(df, region, cases):
     tmp_df = df[df['Region'] == region]
-    #tmp_df.drop(['2020-04-01', '2020-03-31', '2020-03-30', '2020-03-29'], axis=1, inplace=True)
     dates = tmp_df.drop(['Region', 'Befolkning', 'Medelålder'], axis=1).columns
     values = tmp_df.drop(['Region', 'Befolkning', 'Medelålder'], axis=1).iloc[0].values
     befolkning = tmp_df['Befolkning'].values[0]

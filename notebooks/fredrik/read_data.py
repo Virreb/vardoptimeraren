@@ -1,4 +1,3 @@
-
 import pandas as pd
 from datetime import datetime
 
@@ -10,7 +9,6 @@ def read_and_merge_sources():
         befolkning = befolkning[['Hela riket', 10327589, 41.313715]]
         befolkning.dropna(inplace=True)
         befolkning.columns = ['Region', 'Befolkning', 'Medelålder']
-        befolkning = befolkning[befolkning['Region'] != 'Gotlands län']
         befolkning.reset_index(inplace=True)
         befolkning.drop('index', axis=1, inplace=True)
 
@@ -23,7 +21,8 @@ def read_and_merge_sources():
                          'Västmanlands län': 'Region Västmanland', 'Dalarnas län': 'Region Dalarna',
                          'Gävleborgs län': 'Region Gävleborg', 'Västernorrlands län': 'Region Västernorrland',
                          'Jämtlands län': 'Region Jämtland Härjedalen', 'Västerbottens län': 'Region Västerbotten',
-                         'Norrbottens län': 'Region Norrbotten', 'Uppsala län': 'Region Uppsala'
+                         'Norrbottens län': 'Region Norrbotten', 'Uppsala län': 'Region Uppsala', 
+                         'Gotlands län': 'Region Gotland'
                         }
 
         befolkning['Region'] = [lan_to_region[val] for val in befolkning['Region']]

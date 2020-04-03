@@ -15,7 +15,7 @@ def run_model():
 	train = data[data['date'] < split_date]
 	train = train.replace(np.inf, np.nan)
 	train = train.dropna()
-	test = data[(data['date'] >= split_date) & (data['date'] < '2020-03-30')]
+	test = data[(data['date'] >= split_date) & (data['date'] < '2020-03-31')]
 	X = train.drop(['date', 'change_coming_3_days', 'Region', 'cases'], axis=1)
 	y = train['change_coming_3_days']
 
