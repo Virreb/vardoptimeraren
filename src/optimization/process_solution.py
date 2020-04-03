@@ -104,15 +104,27 @@ def plot_final_state(mdl,current_df,geojson):
             color=color,
             fill=True,
             fill_color=color,
-            tooltip=None,
+            tooltip="Klicka här!",
         ).add_to(m)
       
     # Add arrows and lines
     for (period, d1, d2, nb, il) in mdl.edges: 
+        
+        # Find arrow coordinates
         coordinates = [[current_df.at[d1,"Lat"], current_df.at[d1,"Long"]], 
                        [current_df.at[d2,"Lat"], current_df.at[d2,"Long"]]]
-        pl = folium.PolyLine(coordinates, color="black", weight=2)
+        
+        # Define tooltop
+        if nb == 1:
+            tooltip = str(nb)+" patient från "+d1+" till "+d2
+        elif nb > 1:
+            tooltip = str(nb)+" patienter från "+d1+" till "+d2
+        
+        # Draw line
+        pl = folium.PolyLine(coordinates, color="black", weight=3,tooltip=tooltip)
         m.add_child(pl)    
+        
+        # Draw arrows
         arrows = get_arrows(locations=coordinates, color="black", size=3, n_arrows=1)
         for arrow in arrows:
             arrow.add_to(m)

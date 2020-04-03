@@ -113,7 +113,7 @@ def plot_initial_state(current_df,geojson):
             color=color,
             fill=True,
             fill_color=color,
-            tooltip=None,
+            tooltip="Klicka här!",
         ).add_to(m)
     
     return m
