@@ -59,14 +59,21 @@ def define_distance_measures(mdl):
                                  for t in mdl.transfer_periods)
     return mdl
 
-def summarize_objectives(mdl):
+def summarize_objectives(mdl,
+                         w_total_undercapacity = 100,
+                         w_max_under = 100,
+                         w_max_over = 1, 
+                         w_nb_patient_transfers = 1,
+                         w_km_patient_transfers = 0.01,
+                         w_nb_long_transfers = 0.01):
+    
     # ----------------------------------------------------------------------- #
     # Summarize all
     # ----------------------------------------------------------------------- #   
-    mdl.minimize(100   * mdl.total_undercapacity +\
-                 100   * mdl.max_under + \
-                 1     * mdl.max_over + \
-                 1     * mdl.nb_patient_transfers + \
-                 0.01  * mdl.km_patient_transfers + \
-                 0.01  * mdl.nb_long_transfers)
+    mdl.minimize(w_total_undercapacity   * mdl.total_undercapacity +\
+                 w_max_under             * mdl.max_under + \
+                 w_max_over              * mdl.max_over + \
+                 w_nb_patient_transfers  * mdl.nb_patient_transfers + \
+                 w_km_patient_transfers  * mdl.km_patient_transfers + \
+                 w_nb_long_transfers     * mdl.nb_long_transfers)
     return mdl

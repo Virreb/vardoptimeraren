@@ -80,12 +80,9 @@ def calculate_distances(mdl, current_df):
                         for d2 in mdl.deps} 
                         for d1 in mdl.deps}
     
-    mdl.is_long = {d1:{d2:distance(current_df[current_df.Region == d1].Lat.values[0], 
-                                   current_df[current_df.Region == d1].Long.values[0], 
-                                   current_df[current_df.Region == d2].Lat.values[0], 
-                                   current_df[current_df.Region == d2].Long.values[0]) > mdl.THRESHOLD_FOR_LONG_DISTANCE
-                        for d2 in mdl.deps} 
-                        for d1 in mdl.deps}
+    mdl.is_long = {d1:{d2: mdl.dep_distances[d1][d2] > mdl.THRESHOLD_FOR_LONG_DISTANCE
+                  for d2 in mdl.deps} 
+                  for d1 in mdl.deps}
     
     mdl.dep_neighbor = {}
     for dep in mdl.deps: 

@@ -42,7 +42,7 @@ def process_final_data(mdl,current_df,trend_dict,today,target_day):
     
     return mdl, current_df
 
-def plot_final_state(mdl,current_df):
+def plot_final_state(mdl,current_df,geojson):
     
     from folium_scripts import get_arrows
     import folium
@@ -70,9 +70,8 @@ def plot_final_state(mdl,current_df):
                 'color': 'black','fillColor': color}
     
     # Import geojson data and apply styling rule
-    geo ='./data/geocounties.geojson'
     folium.GeoJson(
-        geo,
+        geojson,
         name='geojson',
         style_function=style_function
     ).add_to(m)

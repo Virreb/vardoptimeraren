@@ -4,7 +4,19 @@ Created on Fri Apr  3 08:59:33 2020
 @author: tilda.lundgren
 """
 
-def run_optimization():
+def run_optimization(start_day="2020-3-28", 
+                     time_horizon=3, 
+                     path_to_trend_data = "../../data/iva_kumulativ.csv",
+                     path_to_static_region_data = "../../data/regions.csv",
+                     path_to_static_geojson = "../../data/geocounties.geojson",
+                     solve_time_limit = 60, #seconds
+                     w_total_undercapacity = 100,
+                     w_max_under = 100,
+                     w_max_over = 1,
+                     w_nb_patient_transfers = 1,
+                     w_km_patient_transfers = 0.01,
+                     w_nb_long_transfers = 0.01
+                     ):
     
     # --------------------------------------------------------------------------- #
     # Set-up
@@ -13,20 +25,20 @@ def run_optimization():
     warnings.filterwarnings("ignore")
     
     from datetime import timedelta
-    from datetime import date
-    today = date(2020,3,29) #today = date.today()
-    target_day = today + timedelta(days=3)
+    from datetime import datetime
     
+    today = datetime.strptime(start_day, '%Y-%m-%d')
+    target_day = today + timedelta(days=time_horizon)
     
     # --------------------------------------------------------------------------- #
     # Read data
     # --------------------------------------------------------------------------- #  
     import read_data_for_optimization 
-    current_df, trend_dict = read_data_for_optimization.read_and_process_data(trend_data = "../../data/iva_kumulativ.csv",
-                                                                          region_data = "../../data/regions.csv",
-                                                                          today = today)
-    folium_map = read_data_for_optimization.plot_initial_state(current_df)
-    folium_map.save('initial_state.html')
+    current_df, trend_dict = read_data_for_optimization.read_and_process_data(trend_data = path_to_trend_data,
+                                                                              region_data = path_to_static_region_data,
+                                                                              today = today)
+    initial_map = read_data_for_optimization.plot_initial_state(current_df,geojson=path_to_static_geojson)
+    initial_map.save('initial_state.html')
     
     
     # --------------------------------------------------------------------------- #
@@ -54,27 +66,22 @@ def run_optimization():
     mdl = define_model_objective.undercapacity_distribution(mdl,current_df)
     mdl = define_model_objective.overcapacity_distribution(mdl,current_df)
     mdl = define_model_objective.define_distance_measures(mdl)
-    mdl = define_model_objective.summarize_objectives(mdl)
-    
+    mdl = define_model_objective.summarize_objectives(mdl,
+                                                      w_total_undercapacity = w_total_undercapacity,
+                                                      w_max_under = w_max_under,
+                                                      w_max_over = w_max_over,
+                                                      w_nb_patient_transfers = w_nb_patient_transfers,
+                                                      w_km_patient_transfers = w_km_patient_transfers,
+                                                      w_nb_long_transfers = w_nb_long_transfers)
     
     # --------------------------------------------------------------------------- #
     # Solve model
     # --------------------------------------------------------------------------- # 
-    mdl.set_time_limit(60); #Seconds
+    mdl.set_time_limit(solve_time_limit); #Seconds
     mdl.parameters.mip.strategy.probe.set(0);
     mdl.parameters.parallel.set(-1); #  opportunistic parallel search mode
     mdl.parameters.threads.set(4);
-    mdl.solve(log_output=False,lex_mipgaps = [0.001])
-    
-    print("\nOptimal solution values:")
-    print("Total undercapacity:", mdl.total_undercapacity.solution_value, "patients")
-    print("Max region undercapacity:", mdl.max_under.solution_value, "patients")
-    print("Max region overcapacity: ",mdl.max_over.solution_value,"patients")
-    print("Patient transfers:",mdl.nb_patient_transfers.solution_value,"patients")
-    print("Transfer kilometers:", round(mdl.km_patient_transfers.solution_value), "km")
-    print("Long transfers:",mdl.nb_long_transfers.solution_value)
-    print("Short transfers:",mdl.nb_short_transfers.solution_value)
-    
+    mdl.solve(log_output=False,lex_mipgaps = [0.001])    
     
     # --------------------------------------------------------------------------- #
     # Process solution
@@ -82,5 +89,7 @@ def run_optimization():
     import process_solution
     mdl = process_solution.process_allocations(mdl)
     mdl,current_df = process_solution.process_final_data(mdl,current_df,trend_dict,today,target_day)
-    folium_map = process_solution.plot_final_state(mdl,current_df)
-    folium_map.save('final_state.html')
+    final_map = process_solution.plot_final_state(mdl,current_df,geojson=path_to_static_geojson)
+    final_map.save('final_state.html')
+    
+    return initial_map, final_map, mdl.allocation_plan

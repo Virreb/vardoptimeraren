@@ -6,9 +6,7 @@ import pandas as pd
 from datetime import date
 import folium
  
-def read_and_process_data(trend_data = "../data/iva_kumulativ.csv", 
-                          region_data = "../data/regions.csv",
-                          today = date(2020,3,29)):
+def read_and_process_data(trend_data, region_data, today = date(2020,3,29)):
     
     # Read historical Covid-19-data
     iva_df = pd.read_csv(trend_data,sep=";")
@@ -57,7 +55,7 @@ def read_and_process_data(trend_data = "../data/iva_kumulativ.csv",
         
     return current_df, trend_dict
 
-def plot_initial_state(current_df):
+def plot_initial_state(current_df,geojson):
     
     # Initiate map
     m = folium.Map(location=[62, 20], zoom_start=5)
@@ -82,9 +80,8 @@ def plot_initial_state(current_df):
                 'color': 'black','fillColor': color}
     
     # Import geojson data and apply styling rule
-    geo ='./data/geocounties.geojson'
     folium.GeoJson(
-        geo,
+        geojson,
         name='geojson',
         style_function=style_function
     ).add_to(m)
