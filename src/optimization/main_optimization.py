@@ -37,9 +37,7 @@ def run_optimization(start_day="2020-3-28",
     current_df, trend_dict = read_data_for_optimization.read_and_process_data(trend_data = path_to_trend_data,
                                                                               region_data = path_to_static_region_data,
                                                                               today = today)
-    initial_map = read_data_for_optimization.plot_initial_state(current_df,geojson=path_to_static_geojson)
-    initial_map.save('initial_state.html')
-    
+    initial_map = read_data_for_optimization.plot_initial_state(current_df,geojson=path_to_static_geojson)    
     
     # --------------------------------------------------------------------------- #
     # Build and prepare optimization model
@@ -90,6 +88,5 @@ def run_optimization(start_day="2020-3-28",
     mdl = process_solution.process_allocations(mdl)
     mdl,current_df = process_solution.process_final_data(mdl,current_df,trend_dict,today,target_day)
     final_map = process_solution.plot_final_state(mdl,current_df,geojson=path_to_static_geojson)
-    final_map.save('final_state.html')
     
     return initial_map, final_map, mdl.allocation_plan
