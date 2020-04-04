@@ -2585,8 +2585,9 @@
 	}
 
 	header.major {
-		margin: 0 0 6em 0;
+		margin: 0 0 1em 0;
 	}
+
 
 		header.major h2 {
 			font-size: 3em;
