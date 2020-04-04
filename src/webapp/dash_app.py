@@ -17,12 +17,27 @@ app.layout = html.Div([
 ])
 
 layout_optimizing = html.Div(children=[
-    # insert header and children from index.html but with dash html components
-    html.H1(children='AI-Mackapären 5000'),
-    html.Br(),
-    html.H3(children='''
-        Developed by Advectas during Hack the crisis 2020.
-    '''),
+    # Not sure if this block is needed
+    # html.Header(children=[
+    #     html.Title('Vårdoptimeraren'),
+    #     html.Meta(name='viewport', charSet='utf-8', content='width=device-width initial-scale=1'),
+    #     html.Link(rel='stylesheet', href='assets/main.css'),
+    # ]),
+
+    html.Header(id='header', children=[
+        html.H1(children=[
+            html.Strong(html.A('Vårdoptimeraren', href='/')),
+            ' by Team Advectas'
+        ]),
+        html.Nav(id='nav', children=[
+            html.Ul(children=[
+                html.Li(html.A('Home', href='/')),
+                html.Li(html.A('Forecasting', href='/forecasting')),
+                html.Li(html.A('Optimizing', href='/optimizing')),
+            ])
+        ])
+    ]),
+    html.A(href='#menu', className='navPanelToggle', children=html.Span(className='fa fa-bars')),
 
     html.Button("Kör", n_clicks=0, id="optimize_button"),
 
@@ -34,7 +49,6 @@ layout_optimizing = html.Div(children=[
             max=200,
             step=0.5,
             value=100,
-            #marks={0: "0", 10: "10", 20: "20"},
         ),
     ]),
 
@@ -46,7 +60,6 @@ layout_optimizing = html.Div(children=[
             max=20,
             step=0.5,
             value=1,
-            # marks={0: "0", 10: "10", 20: "20"},
         ),
     ]),
 
@@ -58,7 +71,6 @@ layout_optimizing = html.Div(children=[
             max=200,
             step=0.5,
             value=100,
-            #marks={0: "0", 10: "10", 20: "20"},
         ),
     ]),
 
@@ -70,7 +82,6 @@ layout_optimizing = html.Div(children=[
             max=1,
             step=0.1,
             value=0.01,
-            #marks={0: "0", 10: "10", 20: "20"},
         ),
     ]),
 
@@ -82,7 +93,6 @@ layout_optimizing = html.Div(children=[
             max=1,
             step=0.1,
             value=0.01,
-            #marks={0: "0", 10: "10", 20: "20"},
         ),
     ]),
 
@@ -94,7 +104,6 @@ layout_optimizing = html.Div(children=[
             max=10,
             step=0.5,
             value=1,
-            #marks={0: "0", 10: "10", 20: "20"},
         ),
     ]),
 
@@ -108,8 +117,24 @@ layout_optimizing = html.Div(children=[
         type="circle",
     ),
 
-    html.Img(src=app.get_asset_url('banner.jpg')),
-    # print(app.get_asset_url('banner.jpg'))  # debugging
+    html.Footer(id='footer', children=[
+        html.Div(className='container', children=[
+            html.Ul(className='icons', children=[
+                html.A(href='http://www.advectas.com',
+                       children=html.Img(
+                            src=app.get_asset_url('advectas_logo_cg_black.png'),
+                            alt="Advectas logo", width='300px')
+                       )
+            ]),
+            html.Ul(className='copyright', children=[
+                html.Li('© Advectas 2020'),
+                html.Li(children=[
+                    'Design:',
+                    html.A('TEMPLATED', href='http://templated.co')
+                ]),
+            ])
+        ])
+    ])
 ])
 
 
@@ -132,21 +157,9 @@ def update_slider_output(value):
            State(component_id='w_km_patient_transfers', component_property='value'),
            State(component_id='w_nb_long_transfers', component_property='value')]
 )
-
-def update_map(value, wmax_under, wmax_over, w_total_undercapacity, w_nb_patient_transfers, w_km_patient_transfers,
+def update_map(nbr_clicks, wmax_under, wmax_over, w_total_undercapacity, w_nb_patient_transfers, w_km_patient_transfers,
                w_nb_long_transfers):
-    import folium
-    import numpy as np
     from src.optimization.main_optimization import run_optimization
-
-    random_location = [45, 10] + np.random.randn(2)*5
-
-    # create sample map
-    m = folium.Map(
-        location=random_location,
-        zoom_start=5,
-        tiles='Stamen Terrain'
-    )
 
     initial_map, final_map, allocation_plan = run_optimization(w_max_under=wmax_under, w_max_over=wmax_over,
                                                                w_total_undercapacity=w_total_undercapacity,
@@ -155,8 +168,6 @@ def update_map(value, wmax_under, wmax_over, w_total_undercapacity, w_nb_patient
                                                                w_nb_long_transfers=w_nb_long_transfers)
 
     print(allocation_plan)
-    tooltip = 'Click me!'
-    folium.Marker(random_location, popup=value, tooltip=tooltip).add_to(m)
     html_string = final_map.get_root().render()
 
     return html.Iframe(srcDoc=html_string, width='100%', height='500px')
@@ -167,17 +178,17 @@ def update_map(value, wmax_under, wmax_over, w_total_undercapacity, w_nb_patient
               [dash.dependencies.Input('url', 'pathname')])
 def display_page(pathname):
 
-    # use the first list if running from WSGI, the other if in prod
-    # if pathname == '/':
-    #     return dash_dangerously_set_inner_html.DangerouslySetInnerHTML(f'{open("index.html", "r").read()}'),
-    # elif pathname == '/forecasting':
-    #     return dash_dangerously_set_inner_html.DangerouslySetInnerHTML(f'{open("forecast.html", "r").read()}'),
-    # elif pathname == '/about':
-    #     return dash_dangerously_set_inner_html.DangerouslySetInnerHTML(f'{open("about.html", "r").read()}'),
-    # elif pathname == '/optimizing':
-    #     return layout_optimizing
-    # else:
-    #     return html.H1('404, this page does not exist!')
+    # use the first list of ifs when running from WSGI
+    if pathname == '/':
+        return dash_dangerously_set_inner_html.DangerouslySetInnerHTML(f'{open("index.html", "r").read()}'),
+    elif pathname == '/forecasting':
+        return dash_dangerously_set_inner_html.DangerouslySetInnerHTML(f'{open("forecast.html", "r").read()}'),
+    elif pathname == '/about':
+        return dash_dangerously_set_inner_html.DangerouslySetInnerHTML(f'{open("about.html", "r").read()}'),
+    elif pathname == '/optimizing':
+        return layout_optimizing
+    else:
+        return html.H1('404, this page does not exist!')
 
     if pathname == '/':
         return dash_dangerously_set_inner_html.DangerouslySetInnerHTML(f'{open("src/webapp/index.html", "r").read()}'),
