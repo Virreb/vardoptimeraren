@@ -34,6 +34,7 @@ layout_optimizing = html.Div(children=[
                 html.Li(html.A('Home', href='/')),
                 html.Li(html.A('Forecasting', href='/forecasting')),
                 html.Li(html.A('Optimizing', href='/optimizing')),
+                html.Li(html.A('Hack the Crisis', href='/hack_the_crisis')),
             ])
         ])
     ]),
@@ -91,7 +92,7 @@ layout_optimizing = html.Div(children=[
                    "Folium</a>. Together with the forecasting solution, it was isolated in a "
                    "<a href=” https://www.docker.com/why-docker”>Docker container</a> and deployed on Microsoft Azure. "),
             html.Header(className="major special", children=[
-                html.H2("Try our optimization solution"),
+                html.H2("Our optimization solution"),
                 html.P("About"),
             ]),
             html.P("To showcase the broad range of possibilities, we have created an interactive optimization solution"
@@ -101,7 +102,7 @@ layout_optimizing = html.Div(children=[
             ]),
             html.P("As a user, you get to define how the trade-off between different possible objections should be "
                    "handled. To make it simple, we have created a pre-defined list of four different criteria."
-                   "As a user, you get to decide how important each criteria is by toggling the sliders below. "
+                   "You decide how important each criteria is by toggling the sliders below. "
                    "A value of 0 (all the way to the left) means that the solver will not care about that objective"
                    "when searching for an optimal solution, whereas a value of 10 (all the way to the right means "
                    "that the solver will optimize mainly to meet that criteria. The four criteria are:"),
@@ -110,8 +111,11 @@ layout_optimizing = html.Div(children=[
                 html.Li(children=[html.Strong("TILDA"), " HJÄLP"]),
                 html.Li(children=[html.Strong("GÄRNA TILL"), " MED ATT"]),
                 html.Li(children=[html.Strong("FYLLA I"), " DESSA"]),
-            ])
-
+            ]),
+            html.Header(className="major special", children=[
+                html.P("Try it out!"),
+            ]),
+            html.P("Delete margin here...")
         ]),
     ]),
 
@@ -260,6 +264,8 @@ def display_page(pathname):
          return dash_dangerously_set_inner_html.DangerouslySetInnerHTML(f'{open("forecast.html", "r").read()}'),
      elif pathname == '/about':
          return dash_dangerously_set_inner_html.DangerouslySetInnerHTML(f'{open("about.html", "r").read()}'),
+     elif pathname == '/hack_the_crisis':
+         return dash_dangerously_set_inner_html.DangerouslySetInnerHTML(f'{open("hack_the_crisis.html", "r").read()}'),
      elif pathname == '/optimizing':
          return layout_optimizing
      else:
@@ -271,6 +277,8 @@ def display_page(pathname):
     #    return dash_dangerously_set_inner_html.DangerouslySetInnerHTML(f'{open("src/webapp/forecast.html", "r").read()}'),
     #elif pathname == '/about':
     #    return dash_dangerously_set_inner_html.DangerouslySetInnerHTML(f'{open("src/webapp/about.html", "r").read()}'),
+    #elif pathname == '/hack_the_crisis':
+    #    return dash_dangerously_set_inner_html.DangerouslySetInnerHTML(f'{open("hack_the_crisis.html", "r").read()}'),
     #elif pathname == '/optimizing':
     #    return layout_optimizing
     #else:
