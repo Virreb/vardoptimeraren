@@ -3,7 +3,7 @@
 .idea/
 env/
 hackaton_venv
-
+cplex_studio*
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
