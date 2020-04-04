@@ -49,7 +49,9 @@ def define_distance_measures(mdl):
     return mdl
 
 def summarize_objectives(mdl,
-                         w_max_overcapacity = 100,
+                         w_total_undercapacity = 100,
+                         w_max_under = 0,
+                         w_max_over = 0,
                          w_nb_patient_transfers = 1,
                          w_km_patient_transfers = 0.01,
                          w_nb_long_transfers = 0.01):
@@ -58,7 +60,7 @@ def summarize_objectives(mdl,
     # Summarize all
     # ----------------------------------------------------------------------- #  
     mdl.sense = plp.LpMinimize
-    mdl.setObjective(w_max_overcapacity      * mdl.over_cap_max +\
+    mdl.setObjective(w_total_undercapacity   * mdl.over_cap_max +\
                      w_nb_patient_transfers  * mdl.nb_patient_transfers + \
                      w_km_patient_transfers  * mdl.km_patient_transfers + \
                      w_nb_long_transfers     * mdl.nb_long_transfers)
