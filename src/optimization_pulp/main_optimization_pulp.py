@@ -9,6 +9,7 @@ def run_optimization(start_day="2020-3-28",
                      path_to_trend_data = "../../data/iva_kumulativ.csv",
                      path_to_static_region_data = "../../data/regions.csv",
                      path_to_static_geojson = "../../data/geocounties.geojson",
+                     path_to_static_distances = "../../data/distances.pickle",
                      solve_time_limit = 60, #seconds
                      w_total_undercapacity = 100,
                      w_max_under = 100,
@@ -33,38 +34,36 @@ def run_optimization(start_day="2020-3-28",
     # --------------------------------------------------------------------------- #
     # Read data
     # --------------------------------------------------------------------------- #  
-    import read_data_for_optimization 
-    current_df, trend_dict = read_data_for_optimization.read_and_process_data(trend_data = path_to_trend_data,
+    import read_data_for_optimization_pulp 
+    current_df, trend_dict = read_data_for_optimization_pulp.read_and_process_data(trend_data = path_to_trend_data,
                                                                               region_data = path_to_static_region_data,
                                                                               today = today)
-    initial_map = read_data_for_optimization.plot_initial_state(current_df,geojson=path_to_static_geojson)    
+    initial_map = read_data_for_optimization_pulp.plot_initial_state(current_df,geojson=path_to_static_geojson)    
     
     # --------------------------------------------------------------------------- #
     # Build and prepare optimization model
     # --------------------------------------------------------------------------- # 
-    import build_optimization_model
-    build_optimization_model.check_environment()
-    mdl = build_optimization_model.build_model()
-    mdl = build_optimization_model.define_model_parameters_and_sets(mdl, current_df)
-    mdl = build_optimization_model.define_model_variables(mdl)
-    mdl = build_optimization_model.calculate_distances(mdl, current_df)
+    import pulp as plp
+    import build_optimization_model_pulp
+    mdl = build_optimization_model_pulp.build_model()
+    mdl = build_optimization_model_pulp.define_model_parameters_and_sets(mdl, current_df)
+    mdl = build_optimization_model_pulp.define_model_variables(mdl)
+    mdl = build_optimization_model_pulp.calculate_distances(mdl, current_df,path_to_static_distances)
     
-    import define_model_constraints
-    mdl = define_model_constraints.exempt_departments(mdl)
-    mdl = define_model_constraints.set_initial_state(mdl,current_df)
-    mdl = define_model_constraints.link_x_and_y_vars(mdl)
-    mdl = define_model_constraints.restrict_transfers(mdl)
-    mdl = define_model_constraints.transfer_bounds(mdl)
-    mdl = define_model_constraints.maximum_long_transfers(mdl)
-    mdl = define_model_constraints.short_transfers_per_dep(mdl)
-    mdl = define_model_constraints.update_for_next_period(mdl,trend_dict,today,target_day)
+    import define_model_constraints_pulp
+    mdl = define_model_constraints_pulp.exempt_departments(mdl)
+    mdl = define_model_constraints_pulp.set_initial_state(mdl,current_df)
+    mdl = define_model_constraints_pulp.link_x_and_y_vars(mdl)
+    mdl = define_model_constraints_pulp.restrict_transfers(mdl)
+    mdl = define_model_constraints_pulp.transfer_bounds(mdl)
+    mdl = define_model_constraints_pulp.maximum_long_transfers(mdl)
+    mdl = define_model_constraints_pulp.short_transfers_per_dep(mdl)
+    mdl = define_model_constraints_pulp.update_for_next_period(mdl,trend_dict,today,target_day)
     
-    import define_model_objective
-    mdl = define_model_objective.define_total_undercapacity(mdl,current_df)
-    mdl = define_model_objective.undercapacity_distribution(mdl,current_df)
-    mdl = define_model_objective.overcapacity_distribution(mdl,current_df)
-    mdl = define_model_objective.define_distance_measures(mdl)
-    mdl = define_model_objective.summarize_objectives(mdl,
+    import define_model_objective_pulp
+    mdl = define_model_objective_pulp.define_max_overcapacity(mdl,current_df)
+    mdl = define_model_objective_pulp.define_distance_measures(mdl)
+    mdl = define_model_objective_pulp.summarize_objectives(mdl,
                                                       w_total_undercapacity = w_total_undercapacity,
                                                       w_max_under = w_max_under,
                                                       w_max_over = w_max_over,
@@ -75,18 +74,19 @@ def run_optimization(start_day="2020-3-28",
     # --------------------------------------------------------------------------- #
     # Solve model
     # --------------------------------------------------------------------------- # 
-    mdl.set_time_limit(solve_time_limit); #Seconds
-    mdl.parameters.mip.strategy.probe.set(0);
-    mdl.parameters.parallel.set(-1); #  opportunistic parallel search mode
-    mdl.parameters.threads.set(4);
-    mdl.solve(log_output=False,lex_mipgaps = [0.001])    
+    import time
+    start = time.time()
+    mdl.solve(solver=plp.PULP_CBC_CMD());
+    #mdl.solve(solver=plp.CPLEX(msg=False));
+    end = time.time()
+    print("Time to solve:",round(end-start,10),"seconds")
     
     # --------------------------------------------------------------------------- #
     # Process solution
     # --------------------------------------------------------------------------- # 
-    import process_solution
-    mdl = process_solution.process_allocations(mdl)
-    mdl,current_df = process_solution.process_final_data(mdl,current_df,trend_dict,today,target_day)
-    final_map = process_solution.plot_final_state(mdl,current_df,geojson=path_to_static_geojson)
+    import process_solution_pulp
+    mdl = process_solution_pulp.process_allocations(mdl)
+    mdl,current_df = process_solution_pulp.process_final_data(mdl,current_df,trend_dict,today,target_day)
+    final_map = process_solution_pulp.plot_final_state(mdl,current_df,geojson=path_to_static_geojson)
     
     return initial_map, final_map, mdl.allocation_plan
