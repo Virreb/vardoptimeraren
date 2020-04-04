@@ -1,22 +1,22 @@
 ﻿Region;Lat;Long;Capacity
-Region Blekinge;56.1887692;15.5552307;6
-Region Dalarna;61.0070263;14.4121466;14
-Region Gotland;57.6271191;18.1685052;2
-Region Gävleborg;60.6875496;16.9094728;16
-Region Halland;56.6703666;12.5478546;13
-Region Jämtland Härjedalen;63.1750771;14.3706061;7
+Region Blekinge;56.16156;15.58661;6
+Region Dalarna;61.004627;14.537272;14
+Region Gotland;57.634800;18.294840;2
+Region Gävleborg;60.67452;17.14174;16
+Region Halland;56.67446;12.85676;13
+Region Jämtland Härjedalen;63.1792;14.63566;7
 Region Jönköping;57.78145;14.15618;15
-Region Kalmar;56.6873648;16.1877056;11
-Region Kronoberg;56.8895206;14.6540577;8
-Region Norrbotten;67.1394502;20.5222172;17
+Region Kalmar;56.66157;16.36163;11
+Region Kronoberg;56.87767;14.80906;8
+Region Norrbotten;67.13387;20.65278;17
 Region Skåne;55.60587;13.00073;54
 Region Stockholm;59.334591;18.063240;190
-Region Sörmland;58.753109;17.009333;14
-Region Uppsala;59.8329818;17.3782665;25
-Region Värmland;59.3925738;13.2433361;13
-Region Västerbotten;65.1014192;17.045959;21
-Region Västernorrland;63.2838024;18.4049388;13
-Region Västmanland;59.6242931;16.2649099;9
-Region Örebro;59.2779983;15.0623712;22
-Region Östergötland;58.4034828;15.3305917;31
-Västra Götalandsregionen;57.708870;11.974560;115
+Region Sörmland;58.753;17.00788;14
+Region Uppsala;59.85882;17.63889;25
+Region Värmland;59.3793;13.50357;13
+Region Västerbotten;65.0956204;17.1122771;21
+Region Västernorrland;63.29091;18.71525;13
+Region Västmanland;59.611366;16.545025;9
+Region Örebro;59.27412;15.2066;22
+Region Östergötland;58.41086;15.62157;31
+Västra Götalandsregionen;57.70716;11.96679;115
