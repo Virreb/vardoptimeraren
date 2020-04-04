@@ -167,25 +167,26 @@ def update_map(value, wmax_under, wmax_over, w_total_undercapacity, w_nb_patient
               [dash.dependencies.Input('url', 'pathname')])
 def display_page(pathname):
 
-    # use the first list if running from WSGI, the other if in prod
-    # if pathname == '/':
-    #     return dash_dangerously_set_inner_html.DangerouslySetInnerHTML(f'{open("index.html", "r").read()}'),
-    # elif pathname == '/forecasting':
-    #     return dash_dangerously_set_inner_html.DangerouslySetInnerHTML(f'{open("forecast.html", "r").read()}'),
-    # elif pathname == '/about':
-    #     return dash_dangerously_set_inner_html.DangerouslySetInnerHTML(f'{open("about.html", "r").read()}'),
-    # elif pathname == '/optimizing':
-    #     return layout_optimizing
-    # else:
-    #     return html.H1('404, this page does not exist!')
+     #use the first list if running from WSGI, the other if in prod
+     if pathname == '/':
+         return dash_dangerously_set_inner_html.DangerouslySetInnerHTML(f'{open("index.html", "r").read()}'),
+     elif pathname == '/forecasting':
+         return dash_dangerously_set_inner_html.DangerouslySetInnerHTML(f'{open("forecast.html", "r").read()}'),
+     elif pathname == '/about':
+         return dash_dangerously_set_inner_html.DangerouslySetInnerHTML(f'{open("about.html", "r").read()}'),
+     elif pathname == '/optimizing':
+         return layout_optimizing
+     else:
+         return html.H1('404, this page does not exist!')
 
-    if pathname == '/':
-        return dash_dangerously_set_inner_html.DangerouslySetInnerHTML(f'{open("src/webapp/index.html", "r").read()}'),
-    elif pathname == '/forecasting':
-        return dash_dangerously_set_inner_html.DangerouslySetInnerHTML(f'{open("src/webapp/forecast.html", "r").read()}'),
-    elif pathname == '/about':
-        return dash_dangerously_set_inner_html.DangerouslySetInnerHTML(f'{open("src/webapp/about.html", "r").read()}'),
-    elif pathname == '/optimizing':
-        return layout_optimizing
-    else:
-        return html.H1('404, this page does not exist!')
+
+    #if pathname == '/':
+    #    return dash_dangerously_set_inner_html.DangerouslySetInnerHTML(f'{open("src/webapp/index.html", "r").read()}'),
+    #elif pathname == '/forecasting':
+    #    return dash_dangerously_set_inner_html.DangerouslySetInnerHTML(f'{open("src/webapp/forecast.html", "r").read()}'),
+    #elif pathname == '/about':
+    #    return dash_dangerously_set_inner_html.DangerouslySetInnerHTML(f'{open("src/webapp/about.html", "r").read()}'),
+    #elif pathname == '/optimizing':
+    #    return layout_optimizing
+    #else:
+    #    return html.H1('404, this page does not exist!')
