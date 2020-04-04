@@ -1,3 +1,5 @@
+import sys
+sys.path.append('/src')
 from src.webapp.dash_app import app
 
 PORT = 5000
