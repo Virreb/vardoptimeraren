@@ -35,19 +35,32 @@
 
 					<header class="major special">
 						<h2>Forecasting</h2>
+					</header>
+					<p>One of the main obstacles for facing the ongoing epidemic is the large amount of uncertainty associated with its progress. In order to coordinate and plan our response, we need to know how the disease will spread through society. We have used artificial intelligence and machine learning to be one step ahead of the curve so we can proactively redirect our resources to where they will be needed the most. </p>
+
+
+					<header class="major special">
+						<p>The solution</p>
+					</header>
+					<p>
+						Different measures can be used as proxies for how fast the disease is spreading in the society. Many of these are associated with problems that make them unsuitable for forecasting. For instance, the number of confirmed COVID-19 cases depends on the testing strategy employed by a country, and Sweden is currently in the process of changing its testing strategy. This will likely make historic data about the number of confirmed cases unsuitable for predicting the future number of confirmed cases. The number of confirmed deaths due to COVID-19 would likely be a more reliable measure, but with only 391 dead across Sweden’s 21 regions, the amount of data is too small to create reliable forecasts for each individual region.
+						<br/><br/>
+						We have forecasted the number of ICU-beds that will be occupied by COVID-19 patients in each Swedish region over the next 3 days. Historic data about the number of new ICU-cases each day is available at Svenska Intensivvårdsregistret (SIR). Additionally, we have used demographic data for each region to improve the forecasts, since age and population are important factors for determining the spread of the epidemic. This measure brings a larger number of data points than forecasting the number of deaths, while still being robust to other error sources such as differences in testing strategy.
+						<br/><br/>
+						Knowing the amount of needed ICU-beds for each region is key for planning important resources such as how many doctors and nurses will need to work and how much protective gear will be needed. It can also serve as vital information when planning and optimizing which patients should be given treatment at which hospital and whether or not patients should be moved across regional boundaries. But don't take our word for it. Instead, read what Swedish State Epidemiologist Anders Tegnell told international news bureau TT on April 4th, 2020:
+						<br/>
+						<blockquote>
+						- "The most important part is that the healthcare system gets access to numbers of how many will need intensive care treatment or similar."
+					</blockquote>
+					</p>
+
+
+					<header class="major special">
 						<p>The technology</p>
 					</header>
-					<p>Text about Machine Learning, Time Series Analysis, XGBoost etc</p>
 
-					<header class="major special">
-						<p>The Data</p>
-					</header>
-					<p>Text about what data we used and where we got it</p>
+					<p>A time series is a series of data points listed in time order. Time series forecasting comprises methods for forecasting future values based on previously observed values. This can be done using many different statistical models. We have used the widely popular XGBoost framework which is based on a gradient boosted tree model. The solution is implemented in python and visualized through the open source python framework Plotly. </p>
 
-					<header class="major special">
-						<p>Improvement possibilities</p>
-					</header>
-					<p>Text about how we could improve these forecasts using other data sources, and which data sources that would be.</p>
 
 					<header class="major special">
 						<h2>Our forecasts</h2>
