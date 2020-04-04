@@ -18,7 +18,8 @@ app.layout = html.Div([
     html.Div(id='page-content')
 ])
 
-layout_optimization = html.Div(children=[
+layout_optimizing = html.Div(children=[
+    # insert header and children from index.html but with dash html components
     html.H1(children='AI-Mackapären 5000'),
     html.Br(),
     html.H3(children='''
@@ -88,9 +89,11 @@ def update_map(value):
 def display_page(pathname):
     if pathname == '/':
         return dash_dangerously_set_inner_html.DangerouslySetInnerHTML(f'{open("index.html", "r").read()}'),
-    elif pathname == '/forecast':
+    elif pathname == '/forecasting':
         return dash_dangerously_set_inner_html.DangerouslySetInnerHTML(f'{open("forecast.html", "r").read()}'),
-    elif pathname == '/optimization':
-        return layout_optimization
+    elif pathname == '/about':
+        return dash_dangerously_set_inner_html.DangerouslySetInnerHTML(f'{open("about.html", "r").read()}'),
+    elif pathname == '/optimizing':
+        return layout_optimizing
     else:
         return html.H1('404, this page does not exist!')
