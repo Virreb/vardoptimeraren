@@ -66,17 +66,17 @@ def plot_initial_state(current_df,geojson):
         
         if current_df.at[d,"Rate"] < 0.5:
             if current_df.at[d,"SurplusCapacity"] > 3:
-                color = 'grey'
+                color = '#7AA826' #green
             else: 
-                color = 'green'
+                color = '#FFCA2D' #yellow
         elif 0.5 <= current_df.at[d,"Rate"] < 0.9:
-            color='green'
+            color='#FFCA2D' #yellow
         elif 0.9 <= current_df.at[d,"Rate"] <= 1:
-            color='orange'   
+            color='#EA830E' #orange 
         elif 1 < current_df.at[d,"Rate"]:
-            color='red'  
+            color='#BF2C2A'  #red
             
-        return {'fillOpacity': 0.3,'weight': 0.5,
+        return {'fillOpacity': 0.4,'weight': 0.5,
                 'color': 'black','fillColor': color}
     
     # Import geojson data and apply styling rule
@@ -92,15 +92,15 @@ def plot_initial_state(current_df,geojson):
         # Define styling rules
         if row.Rate < 0.5:
             if row.SurplusCapacity > 3:
-                color = 'grey'
+                color = '#7AA826' #green
             else: 
-                color = 'green'
+                color = '#FFCA2D' #yellow
         elif 0.5 <= row.Rate < 0.9:
-            color='green'
+            color='#FFCA2D' #yellow
         elif 0.9 <= row.Rate <= 1:
-            color='orange'   
+            color='#EA830E' #orange
         elif 1 < row.Rate:
-            color='red'  
+            color='#BF2C2A'  #red
         
         # Draw circle
         folium.Circle(
