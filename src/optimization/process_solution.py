@@ -44,7 +44,7 @@ def process_final_data(mdl,current_df,trend_dict,today,target_day):
 
 def plot_final_state(mdl,current_df,geojson):
     
-    from folium_scripts import get_arrows
+    from src.optimization.folium_scripts import get_arrows
     import folium
     
     # Initiate map
