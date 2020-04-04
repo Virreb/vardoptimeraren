@@ -1,2 +1,2 @@
-from references import init
+from config import init
 
