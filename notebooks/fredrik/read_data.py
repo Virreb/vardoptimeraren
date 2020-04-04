@@ -1,8 +1,47 @@
 import pandas as pd
 from datetime import datetime
+import os
+
+
+def update_iva_data_if_possible():
+        if os.path.exists('../../data/interim/iva_kumulativ.xlsx'):
+                iva_data = pd.read_excel('../../data/interim/iva_kumulativ.xlsx')
+                last_date = iva_data.columns[-1]
+                for filename in os.listdir('../../data/raw/iva_data/'):
+                        date = filename.split(' - ')[2].split('.')[0]
+                        if date > last_date:
+                                iva_data = create_new_iva_data()
+                                break
+        else:
+                iva_data = create_new_iva_data()
+
+        iva_data.to_excel('../../data/interim/iva_kumulativ.xlsx')
+
+
+def create_new_iva_data():
+        for i, filename in enumerate(os.listdir('../../data/raw/iva_data/')):
+            print(filename)
+            data = pd.read_excel('../../data/raw/iva_data/'+filename, skiprows=1)
+            data.columns = ['Region', 'Cases', 'Persons']
+            if i==0:
+                regioner = list(data['Region'].unique())
+                nbr_cases = data['Persons'].values
+                date = filename.split(' - ')[2].split('.')[0]
+                iva_data = pd.DataFrame({'Region': data['Region'], date: nbr_cases})
+            else:
+                nbr_cases = data['Persons'].values
+                date = filename.split(' - ')[2].split('.')[0]
+                tmp_df = pd.DataFrame({'Region': data['Region'], str(date): nbr_cases})
+                iva_data = iva_data.merge(tmp_df, on='Region', how='outer')
+            
+        iva_data = iva_data.set_index('Region')
+        iva_data = iva_data.reindex(sorted(iva_data.columns), axis=1)
+        return iva_data
+        
 
 
 def read_and_merge_sources():
+        update_iva_data_if_possible()
         df = pd.read_excel('../../data/interim/iva_kumulativ.xlsx')
         df = df[df['Region'] != 'Hela riket']
         befolkning = pd.read_excel('../../data/raw/befolkning.xlsx', skiprows=9)

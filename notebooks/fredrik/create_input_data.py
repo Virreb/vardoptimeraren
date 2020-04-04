@@ -1,6 +1,6 @@
 # Create dataframe with all regions
 import pandas as pd
-
+import math
 import functions_dataprep
 import read_data
 
@@ -16,9 +16,8 @@ def create_input_data():
 	    else:
 	        tmp_data = functions_dataprep.create_dataframe_per_region(df, region, cases)
 	        data = pd.concat([data, tmp_data])
-	        
+	data['iva'] = [0 if math.isnan(val) else val for val in data['iva']]        
 	data['iva_per_1000'] = data['iva']/data['befolkning']*1000
-
 	return data
 
 
