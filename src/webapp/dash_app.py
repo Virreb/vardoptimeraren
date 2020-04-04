@@ -6,8 +6,6 @@ from dash.dependencies import Input, Output
 import flask
 import dash_dangerously_set_inner_html
 
-# external_stylesheets = ['https://codepen.io/chriddyp/pen/bWLwgP.css']
-
 server = flask.Flask(__name__)
 app = dash.Dash(__name__, server=server, assets_folder='assets')
 app.config.suppress_callback_exceptions = True  # for multi pages
@@ -88,11 +86,11 @@ def update_map(value):
               [dash.dependencies.Input('url', 'pathname')])
 def display_page(pathname):
     if pathname == '/':
-        return dash_dangerously_set_inner_html.DangerouslySetInnerHTML(f'{open("index.html", "r").read()}'),
+        return dash_dangerously_set_inner_html.DangerouslySetInnerHTML(f'{open("src/webapp/index.html", "r").read()}'),
     elif pathname == '/forecasting':
-        return dash_dangerously_set_inner_html.DangerouslySetInnerHTML(f'{open("forecast.html", "r").read()}'),
+        return dash_dangerously_set_inner_html.DangerouslySetInnerHTML(f'{open("src/webapp/forecast.html", "r").read()}'),
     elif pathname == '/about':
-        return dash_dangerously_set_inner_html.DangerouslySetInnerHTML(f'{open("about.html", "r").read()}'),
+        return dash_dangerously_set_inner_html.DangerouslySetInnerHTML(f'{open("src/webapp/about.html", "r").read()}'),
     elif pathname == '/optimizing':
         return layout_optimizing
     else:
