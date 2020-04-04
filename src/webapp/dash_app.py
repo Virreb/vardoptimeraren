@@ -178,16 +178,16 @@ def update_map(nbr_clicks, wmax_under, wmax_over, w_total_undercapacity, w_nb_pa
 def display_page(pathname):
 
     # use the first list of ifs when running from WSGI
-    if pathname == '/':
-        return dash_dangerously_set_inner_html.DangerouslySetInnerHTML(f'{open("index.html", "r").read()}'),
-    elif pathname == '/forecasting':
-        return dash_dangerously_set_inner_html.DangerouslySetInnerHTML(f'{open("forecast.html", "r").read()}'),
-    elif pathname == '/about':
-        return dash_dangerously_set_inner_html.DangerouslySetInnerHTML(f'{open("about.html", "r").read()}'),
-    elif pathname == '/optimizing':
-        return layout_optimizing
-    else:
-        return html.H1('404, this page does not exist!')
+    # if pathname == '/':
+    #     return dash_dangerously_set_inner_html.DangerouslySetInnerHTML(f'{open("index.html", "r").read()}'),
+    # elif pathname == '/forecasting':
+    #     return dash_dangerously_set_inner_html.DangerouslySetInnerHTML(f'{open("forecast.html", "r").read()}'),
+    # elif pathname == '/about':
+    #     return dash_dangerously_set_inner_html.DangerouslySetInnerHTML(f'{open("about.html", "r").read()}'),
+    # elif pathname == '/optimizing':
+    #     return layout_optimizing
+    # else:
+    #     return html.H1('404, this page does not exist!')
 
     if pathname == '/':
         return dash_dangerously_set_inner_html.DangerouslySetInnerHTML(f'{open("src/webapp/index.html", "r").read()}'),
