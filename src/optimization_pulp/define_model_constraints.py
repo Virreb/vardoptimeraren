@@ -19,7 +19,7 @@ def exempt_departments(mdl):
     return mdl
 
 def set_initial_state(mdl,current_df):
-    # ----------------------------------------------------------------------- #            
+    # ----------------------------------------------------------------------- #           
     # Set initial state
     # ----------------------------------------------------------------------- #
     for d in mdl.deps:
@@ -99,8 +99,7 @@ def short_transfers_per_dep(mdl):
                                            sense=plp.LpConstraintLE,
                                            rhs=mdl.MAX_NB_SHORT_TRANSFERS_PER_DEPARTMENT,
                                            name="max_short_transfers_{0}".format(d)))  
-    return mdl
-            
+    return mdl         
         
 def update_for_next_period(mdl,trend_dict,today,target_day):
     # ----------------------------------------------------------------------- #

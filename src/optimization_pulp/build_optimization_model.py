@@ -15,7 +15,7 @@ def check_environment():
     else:
         print("CPLEX is installed.\n")
         env.print_information()
-   
+        
 def build_model():
     mdl = plp.LpProblem("PatientAllocation")
     return mdl
@@ -46,7 +46,7 @@ def define_model_variables(mdl):
     
     # y_d1_d2 = nb if nb patients are sent on link between department 1 and 2
     mdl.y_vars = {(d1,d2,p): plp.LpVariable(cat=plp.LpInteger,name="y_{0}_{1}_{2}".format(d1,d2,p),
-                                           upBound = mdl.MAX_CASES_PER_LONG_TRANSFERS)
+                                           upBound = mdl.MAX_CASES_PER_LONG_TRANSFERS, lowBound = 0)
                   for d1 in mdl.deps for d2 in mdl.deps for p in mdl.transfer_periods}
     
     # o_d_p = nb if nb patients are placed at department d at period p
@@ -84,12 +84,5 @@ def calculate_distances(mdl, current_df):
     mdl.is_long = {d1:{d2: mdl.dep_distances[d1][d2] > mdl.THRESHOLD_FOR_LONG_DISTANCE
                   for d2 in mdl.deps} 
                   for d1 in mdl.deps}
-    
-    mdl.dep_neighbor = {}
-    for dep in mdl.deps: 
-        dx = mdl.dep_distances[dep]
-        ordered = {k: v for k, v in sorted(dx.items(), key=lambda item: item[1])}
-        neighbors = list(ordered.keys())[1:4]
-        mdl.dep_neighbor[dep] = neighbors
     
     return mdl
