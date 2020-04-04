@@ -9,7 +9,6 @@ def run_optimization(start_day="2020-3-28",
                      path_to_trend_data = "../../data/iva_kumulativ.csv",
                      path_to_static_region_data = "../../data/regions.csv",
                      path_to_static_geojson = "../../data/geocounties.geojson",
-                     path_to_static_distances = "../../data/distances.pickle",
                      solve_time_limit = 60, #seconds
                      w_total_undercapacity = 100,
                      w_max_under = 100,
@@ -48,7 +47,7 @@ def run_optimization(start_day="2020-3-28",
     mdl = build_optimization_model.build_model()
     mdl = build_optimization_model.define_model_parameters_and_sets(mdl, current_df)
     mdl = build_optimization_model.define_model_variables(mdl)
-    mdl = build_optimization_model.calculate_distances(mdl, current_df, path_to_static_distances)
+    mdl = build_optimization_model.calculate_distances(mdl, current_df)
     
     import define_model_constraints
     mdl = define_model_constraints.exempt_departments(mdl)
