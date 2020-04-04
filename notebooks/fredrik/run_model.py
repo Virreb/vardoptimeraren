@@ -9,13 +9,17 @@ import matplotlib.pyplot as plt
 from datetime import timedelta
 from datetime import datetime
 
-def run_model():		
+def run_model(predict_from_date):		
 	data = pd.read_csv('xgboost_input.csv')
-	split_date = '2020-03-26'
+	
+	tmp_predict_from_date = datetime.strptime(predict_from_date, '%Y-%m-%d')
+	split_date = (tmp_predict_from_date - timedelta(7)).strftime('%Y-%m-%d')
+	
 	train = data[data['date'] < split_date]
 	train = train.replace(np.inf, np.nan)
 	train = train.dropna()
-	test = data[(data['date'] >= split_date) & (data['date'] < '2020-04-02')]
+	test = data[(data['date'] >= split_date) & (data['date'] < predict_from_date)]
+
 	X = train.drop(['date', 'change_coming_3_days', 'Region', 'cases'], axis=1)
 	y = train['change_coming_3_days']
 
@@ -36,7 +40,7 @@ def run_model():
 	test['absolute_error_%'] = abs(test['predicted_change']-test['change_coming_3_days'])/test['change_coming_3_days']
 	test['absolute_error_%'].mean()
 
-	return test, model
+	return X, test, model
 
 
 def results(input_data, output_data):
