@@ -39,83 +39,91 @@ layout_optimizing = html.Div(children=[
     ]),
     html.A(href='#menu', className='navPanelToggle', children=html.Span(className='fa fa-bars')),
 
-    html.Button("Kör", n_clicks=0, id="optimize_button"),
+    html.Div(style={'height': '800px', 'margin-top': '50px', 'margin-bottom': '50px'}, children=[
+        html.Div(style={'width': '30%', 'display': 'inline-block', 'margin-left': '5%', 'margin-bottom': '5%'}, children=[
+            html.H3('Set parameters'),
+            html.Div(children=[
+                dcc.Markdown('w_max_under'),
+                dcc.Slider(
+                    id='wmax_under',
+                    min=0,
+                    max=200,
+                    step=0.5,
+                    value=100,
+                ),
+            ]),
 
-    html.Div(children=[
-        dcc.Markdown('Sätt parameter w_max_under'),
-        dcc.Slider(
-            id='wmax_under',
-            min=0,
-            max=200,
-            step=0.5,
-            value=100,
-        ),
+            html.Div(children=[
+                dcc.Markdown('w_max_over'),
+                dcc.Slider(
+                    id='wmax_over',
+                    min=0,
+                    max=20,
+                    step=0.5,
+                    value=1,
+                ),
+            ]),
+
+            html.Div(children=[
+                dcc.Markdown('w_total_undercapacity'),
+                dcc.Slider(
+                    id='w_total_undercapacity',
+                    min=0,
+                    max=200,
+                    step=0.5,
+                    value=100,
+                ),
+            ]),
+
+            html.Div(children=[
+                dcc.Markdown('w_nb_long_transfers'),
+                dcc.Slider(
+                    id='w_nb_long_transfers',
+                    min=0,
+                    max=1,
+                    step=0.1,
+                    value=0.01,
+                ),
+            ]),
+
+            html.Div(children=[
+                dcc.Markdown('w_km_patient_transfers'),
+                dcc.Slider(
+                    id='w_km_patient_transfers',
+                    min=0,
+                    max=1,
+                    step=0.1,
+                    value=0.01,
+                ),
+            ]),
+
+            html.Div(children=[
+                dcc.Markdown('w_nb_patient_transfers'),
+                dcc.Slider(
+                    id='w_nb_patient_transfers',
+                    min=0,
+                    max=10,
+                    step=0.5,
+                    value=1,
+                ),
+            ]),
+            html.Div(style={'text-align': 'center'}, children=[
+                dcc.Loading(    # TODO: loading does not work :(
+                    id="loading",
+                    type="circle",
+                    children=html.Button('Kör', n_clicks=0, id="optimize_button"),
+                ),
+            ]),
+            html.Br()
+        ]),
+
+        html.Div(id='map_output', style={'width': '50%',
+                                         'height': '100%',
+                                         'display': 'inline-block',
+                                         'margin-left': '10%'
+                                         }),
+
     ]),
-
-    html.Div(children=[
-        dcc.Markdown('Sätt parameter w_max_over'),
-        dcc.Slider(
-            id='wmax_over',
-            min=0,
-            max=20,
-            step=0.5,
-            value=1,
-        ),
-    ]),
-
-    html.Div(children=[
-        dcc.Markdown('Sätt parameter w_total_undercapacity'),
-        dcc.Slider(
-            id='w_total_undercapacity',
-            min=0,
-            max=200,
-            step=0.5,
-            value=100,
-        ),
-    ]),
-
-    html.Div(children=[
-        dcc.Markdown('Sätt parameter w_nb_long_transgers'),
-        dcc.Slider(
-            id='w_nb_long_transfers',
-            min=0,
-            max=1,
-            step=0.1,
-            value=0.01,
-        ),
-    ]),
-
-    html.Div(children=[
-        dcc.Markdown('Sätt parameter w_km_patient_transfers'),
-        dcc.Slider(
-            id='w_km_patient_transfers',
-            min=0,
-            max=1,
-            step=0.1,
-            value=0.01,
-        ),
-    ]),
-
-    html.Div(children=[
-        dcc.Markdown('Sätt parameter w_nb_patient_transfers'),
-        dcc.Slider(
-            id='w_nb_patient_transfers',
-            min=0,
-            max=10,
-            step=0.5,
-            value=1,
-        ),
-    ]),
-
-
-    html.Div(id='map_output', children=''),
-
-    # wrap content with this to show blue circle to indicate loading, maybe the map final map?
-    dcc.Loading(
-        id="loading-2",
-        children=html.Div(id="slider_1_output"),     # change place of this too visualize loading
-        type="circle",
-    ),
 
     html.Footer(id='footer', children=[
         html.Div(className='container', children=[
@@ -129,22 +137,13 @@ layout_optimizing = html.Div(children=[
             html.Ul(className='copyright', children=[
                 html.Li('© Advectas 2020'),
                 html.Li(children=[
-                    'Design:',
+                    'Design: ',
                     html.A('TEMPLATED', href='http://templated.co')
                 ]),
             ])
         ])
     ])
 ])
-
-
-@app.callback(
-    Output('slider_1_output', 'children'),
-    [Input('wmax_under', 'value')])
-def update_slider_output(value):
-    import time
-    time.sleep(1)
-    return f'Du valde {value} änna gubben!'
 
 
 @app.callback(
@@ -170,25 +169,25 @@ def update_map(nbr_clicks, wmax_under, wmax_over, w_total_undercapacity, w_nb_pa
     print(allocation_plan)
     html_string = final_map.get_root().render()
 
-    return html.Iframe(srcDoc=html_string, width='100%', height='500px')
+    return html.Iframe(srcDoc=html_string, width='100%', height='100%')
 
 
 # Update the index
-@app.callback(dash.dependencies.Output('page-content', 'children'),
-              [dash.dependencies.Input('url', 'pathname')])
+@app.callback(Output('page-content', 'children'),
+              [Input('url', 'pathname')])
 def display_page(pathname):
 
     # use the first list of ifs when running from WSGI
-    if pathname == '/':
-        return dash_dangerously_set_inner_html.DangerouslySetInnerHTML(f'{open("index.html", "r").read()}'),
-    elif pathname == '/forecasting':
-        return dash_dangerously_set_inner_html.DangerouslySetInnerHTML(f'{open("forecast.html", "r").read()}'),
-    elif pathname == '/about':
-        return dash_dangerously_set_inner_html.DangerouslySetInnerHTML(f'{open("about.html", "r").read()}'),
-    elif pathname == '/optimizing':
-        return layout_optimizing
-    else:
-        return html.H1('404, this page does not exist!')
+    # if pathname == '/':
+    #     return dash_dangerously_set_inner_html.DangerouslySetInnerHTML(f'{open("index.html", "r").read()}'),
+    # elif pathname == '/forecasting':
+    #     return dash_dangerously_set_inner_html.DangerouslySetInnerHTML(f'{open("forecast.html", "r").read()}'),
+    # elif pathname == '/about':
+    #     return dash_dangerously_set_inner_html.DangerouslySetInnerHTML(f'{open("about.html", "r").read()}'),
+    # elif pathname == '/optimizing':
+    #     return layout_optimizing
+    # else:
+    #     return html.H1('404, this page does not exist!')
 
     if pathname == '/':
         return dash_dangerously_set_inner_html.DangerouslySetInnerHTML(f'{open("src/webapp/index.html", "r").read()}'),
