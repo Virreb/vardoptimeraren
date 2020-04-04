@@ -7,11 +7,11 @@ import pandas as pd
 
 def process_allocations(mdl):
     
-    mdl.edges = [(t, d1, d2, int(mdl.y_vars[d1, d2, t]), mdl.is_long[d1][d2]) 
+    mdl.edges = [(t, d1, d2, int(mdl.y_vars[d1, d2, t].value()), mdl.is_long[d1][d2]) 
          for t in mdl.transfer_periods 
          for d1 in mdl.deps 
          for d2 in mdl.deps 
-         if int(mdl.y_vars[d1, d2, t]) >= 1]
+         if int(mdl.y_vars[d1, d2, t].value()) >= 1]
 
     mdl.allocation_plan = pd.DataFrame(columns=["Från","Till","Antal"])
     for edge in mdl.edges: 
@@ -22,7 +22,7 @@ def process_allocations(mdl):
 
 def process_final_data(mdl,current_df,trend_dict,today,target_day):
     
-    final = {d: int(mdl.o_vars[d, mdl.NB_PERIODS].solution_value) for d in mdl.deps}
+    final = {d: int(mdl.o_vars[d, mdl.NB_PERIODS].value()) for d in mdl.deps}
 
     organic = {}
     for d in mdl.deps:    

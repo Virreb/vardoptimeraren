@@ -9,7 +9,7 @@ import dash_dangerously_set_inner_html
 # external_stylesheets = ['https://codepen.io/chriddyp/pen/bWLwgP.css']
 
 server = flask.Flask(__name__)
-app = dash.Dash(__name__, server=server, assets_folder='assets2')
+app = dash.Dash(__name__, server=server, assets_folder='assets')
 app.config.suppress_callback_exceptions = True  # for multi pages
 
 # This is a placeholder for the content, which is filled depending on what URL you're on
