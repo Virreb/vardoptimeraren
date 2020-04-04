@@ -4,6 +4,8 @@ Created on Fri Apr  3 08:32:01 2020
 @author: tilda.lundgren
 """
 
+import pulp as plp
+
 def check_environment():
     from docplex.mp.environment import Environment
     env = Environment()
@@ -15,8 +17,7 @@ def check_environment():
         env.print_information()
    
 def build_model():
-    from docplex.mp.model import Model
-    mdl = Model("PatientAllocations")
+    mdl = plp.LpProblem("PatientAllocation")
     return mdl
     
 def define_model_parameters_and_sets(mdl,current_df):
@@ -40,23 +41,23 @@ def define_model_parameters_and_sets(mdl,current_df):
 def define_model_variables(mdl):
     
     # x_d1_d2 = 1 if link between department 1 and 2 is used
-    mdl.x_vars = {(d1,d2,p): mdl.binary_var(name="x_{0}_{1}_{2}".format(d1,d2,p)) 
-              for d1 in mdl.deps for d2 in mdl.deps for p in mdl.transfer_periods}
+    mdl.x_vars = {(d1,d2,p): plp.LpVariable(cat=plp.LpBinary,name="x_{0}_{1}_{2}".format(d1,d2,p)) 
+                  for d1 in mdl.deps for d2 in mdl.deps for p in mdl.transfer_periods}
     
     # y_d1_d2 = nb if nb patients are sent on link between department 1 and 2
-    mdl.y_vars = {(d1,d2,p): mdl.integer_var(name="y_{0}_{1}_{2}".format(d1,d2,p),
-                   ub = mdl.MAX_CASES_PER_LONG_TRANSFERS) 
-                   for d1 in mdl.deps for d2 in mdl.deps for p in mdl.transfer_periods}
+    mdl.y_vars = {(d1,d2,p): plp.LpVariable(cat=plp.LpInteger,name="y_{0}_{1}_{2}".format(d1,d2,p),
+                                           upBound = mdl.MAX_CASES_PER_LONG_TRANSFERS)
+                  for d1 in mdl.deps for d2 in mdl.deps for p in mdl.transfer_periods}
     
     # o_d_p = nb if nb patients are placed at department d at period p
-    mdl.o_vars = {(d,p): mdl.integer_var(name="o_{0}_{1}".format(d,p), lb = 0) 
+    mdl.o_vars = {(d,p): plp.LpVariable(cat=plp.LpInteger,name="o_{0}_{1}".format(d,p), lowBound = 0) 
                   for d in mdl.deps for p in mdl.all_periods}
     
     # Maximum undercapacity among departments
-    mdl.max_under = mdl.continuous_var(lb=0, name = "max_under")
+    mdl.max_under = plp.LpVariable(cat=plp.LpContinuous, lowBound=0, name = "max_under")
     
     # Maximum overcapacity among departments
-    mdl.max_over = mdl.continuous_var(lb=0, name = "max_over")
+    mdl.max_over = plp.LpVariable(cat=plp.LpContinuous, lowBound=0, name = "max_over")
     
     return mdl
 

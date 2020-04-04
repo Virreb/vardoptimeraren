@@ -3,13 +3,13 @@
 Created on Fri Apr  3 09:58:09 2020
 @author: tilda.lundgren
 """
+import pulp as plp
 
 def define_total_undercapacity(mdl,current_df):
     # ----------------------------------------------------------------------- #
     # Total undercapacity
     # ----------------------------------------------------------------------- #  
-    mdl.total_undercapacity = mdl.sum(mdl.max(0,mdl.o_vars[d, mdl.NB_PERIODS] - current_df.at[d,"Capacity"] ) 
-                                  for d in mdl.deps)
+    mdl.total_undercapacity = plp.lpSum(mdl.o_vars[d, mdl.NB_PERIODS]* (1/current_df.at[d,"Capacity"]) for d in mdl.deps)
     return mdl
 
 def undercapacity_distribution(mdl,current_df):
@@ -36,24 +36,24 @@ def define_distance_measures(mdl):
     # ----------------------------------------------------------------------- #
     # Minimize patient transfers
     # ----------------------------------------------------------------------- #   
-    mdl.nb_long_transfers = mdl.sum(mdl.x_vars[d1, d2, t] 
+    mdl.nb_long_transfers = plp.lpSum(mdl.x_vars[d1, d2, t] 
                                 for d1 in mdl.deps 
                                 for d2 in mdl.deps 
                                 if mdl.is_long[d1][d2] 
                                 for t in mdl.transfer_periods)
     
-    mdl.nb_short_transfers = mdl.sum(mdl.x_vars[d1, d2, t] 
+    mdl.nb_short_transfers = plp.lpSum(mdl.x_vars[d1, d2, t] 
                                  for d1 in mdl.deps 
                                  for d2 in mdl.deps 
                                  if not mdl.is_long[d1][d2] 
                                  for t in mdl.transfer_periods)
     
-    mdl.nb_patient_transfers = mdl.sum(mdl.y_vars[d1, d2, t] 
+    mdl.nb_patient_transfers = plp.lpSum(mdl.y_vars[d1, d2, t] 
                                  for d1 in mdl.deps 
                                  for d2 in mdl.deps
                                  for t in mdl.transfer_periods)
     
-    mdl.km_patient_transfers = mdl.sum(mdl.y_vars[d1, d2, t] * mdl.dep_distances[d1][d2]
+    mdl.km_patient_transfers = plp.lpSum(mdl.y_vars[d1, d2, t] * mdl.dep_distances[d1][d2]
                                  for d1 in mdl.deps 
                                  for d2 in mdl.deps
                                  for t in mdl.transfer_periods)
@@ -69,10 +69,27 @@ def summarize_objectives(mdl,
     
     # ----------------------------------------------------------------------- #
     # Summarize all
-    # ----------------------------------------------------------------------- #   
-    mdl.minimize(w_total_undercapacity   * mdl.total_undercapacity +\
+    # ----------------------------------------------------------------------- #  
+    mdl.sense = plp.LpMinimize
+    mdl.setObjective(w_total_undercapacity   * mdl.total_undercapacity +\
                  w_max_under             * mdl.max_under + \
                  w_max_over              * mdl.max_over + \
+                 w_nb_patient_transfers  * mdl.nb_patient_transfers + \
+                 w_km_patient_transfers  * mdl.km_patient_transfers + \
+                 w_nb_long_transfers     * mdl.nb_long_transfers)
+    return mdl
+
+def summarize_objectives2(mdl,
+                         w_total_undercapacity = 100,
+                         w_nb_patient_transfers = 1,
+                         w_km_patient_transfers = 0.01,
+                         w_nb_long_transfers = 0.01):
+    
+    # ----------------------------------------------------------------------- #
+    # Summarize all
+    # ----------------------------------------------------------------------- #  
+    mdl.sense = plp.LpMinimize
+    mdl.setObjective(w_total_undercapacity   * mdl.total_undercapacity +\
                  w_nb_patient_transfers  * mdl.nb_patient_transfers + \
                  w_km_patient_transfers  * mdl.km_patient_transfers + \
                  w_nb_long_transfers     * mdl.nb_long_transfers)
