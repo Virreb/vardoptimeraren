@@ -49,30 +49,44 @@
 						<p>The Action Plan</p>
 					</header>
 					<p>
-						David writes this tomorrow. <br/>
-						Basically:<br/>
-						1. Application specific knowledge is key for implementing machine learning and decision optimization<br/>
-						2. We don't have it.<br/>
-						3. We have therefore created a solution that we think is interesting and could be helpful<br/>
-						4. The next step would be to meet with a representative from the healthcare system to discuss what changes to do and how it could be used<br/>
-						5. The optimization solution could easily be changed (e.g. new objective, look at individual hospitals instead of regions, use other forecasts as input etc)<br/>
+						From the start of this hackaton, we knew that we wanted to use our knowledge of advanced analytics to create solutions for the healthcare system. We also knew that industry-specific knowledge is key to implementing good machine learning and decision optimization solutions. Since we lack a deep understanding of the healthcare system and its ongoing resource allocation problems, we had a decision to make. We could either create a concept solution and write about all the things we could do if we had access to more specific knowledge about the problems currently facing the system, or we could pick a problem that we think is representative of those challenges and show that we could create a working technical platform for that problem within only a couple of days. We chose the latter.
 					</p>
+					<p>
+						To actually put this solution into use, we would need to meet a representative that works with the overarching resource allocation for the healthcare system and discuss their problems in more detail. This would include answering questions such as:
+					</p>
+					<ol>
+						<li>What other forecasts does the state have access to? How sophisticated are they? How well do our forecasts do in comparison? </li>
+						<li>Which problems should we apply decision optimization to? Should optimizations be inter- or intraregional? Should they aim to move patients or move capacity (e.g. doctors, equipment etc)?</li>
+					</ol>
+					<p>By creating and deploying the demo solution shown on this website, we have created the infrastructure for handling a wide range of different problems. Once we get access to more specific information about the needs of the healthcare system, we can easily change our optimization solution in accordance. Working together with the healthcare system, we can put this solution into production in days, not weeks. </p>
 
 					<header class="major special">
 						<p>Why Vårdoptimeraren rocks</p>
 					</header>
 					<p>
-						David writes this tomorrow.<br/> Basically lead a convincing argument about how we tick all the boxes in the evaluation criteria:<br/>
-						Evaluation criteria:<br/>
-						* Realisability - In the midst of the crisis, is this a solution that we can use? Is it resourceful? Do we have all the needed data? What are the risks? How soon can we get the solution to the intended users in the middle of this crisis? Is the technology mature enough? How much effort is required?<br/>
-						* Benefit for society – Benefits that the solution would bring to society when realized. Which groups of people impacted by the crisis would benefit from this solution? How extensive are the benefits?<br/>
-						* Scalability – Scalability of the solution if it is implemented and realized. How many groups of people impacted by the virus are experiencing the problem and pain? What is the expected demand? How many of them can use this solution? Could this solution be scaled if the crisis grows exponentially?<br/>
-						* Comprehensibility – Is it easy to understand the solution? How it works and how it will be implemented? How well is the solution detailed? Does it include a description of the key segments of people that will benefit from it under this crisis situation? Will the final users of the solution understand it too or do they need special skills to take part?<br/>
-						* Execution – Based on the demo/presentation, is this a well executed solution? How far is the solution developed? How well was it presented?<br/>
-						*	Digital Solution: Is the prototype working fully? If not, how well does it work?<br/>
-						*	Concept Solution: Is the concept detailed enough to implement? Is there a need for further development before one gets started?<br/>
+						Vårdoptimeraren could directly benefit all patients in need of ICU-care around this country. Exactly how this would be depends on the final decision and details regarding implementation. We dare say that proactively being able to transfer either patients or healthcare equipment could be a game changer when facing the upcoming challenge. While it is hard to make quantitative assumptions with the limited data we have, we know that for instance ventilators can mean the difference between life and death. They better be where they are needed.
+					</p>
+					<p>
+						What makes these kinds of systems so powerful is that they can fully harness the processing power of modern computers. Being able to simultaneously account for thousands of parameters while assessing millions of possible solutions, our optimization solution is much more scalable than human decision making.
 					</p>
 
+					<header class="major special">
+						<p>What data we would need</p>
+					</header>
+					<p>
+						For this submission, we have used mockup data where we lack access to good information. The data dependencies are:
+					</p>
+					<strong><p>For the forecasting model:</p></strong>
+					<ol>
+						<li>SIR data about ICU-cases in Sweden</li>
+						<li>Current ICU occupancy numbers (in the demo, we have supposed that patients stay in the ICU for 15 days).</li>
+					</ol>
+					<strong><p>For the optimization solution:</p></strong>
+					<ol>
+						<li>Data on the number of total ICU-beds per region (In the demo, we have used mockup data)</li>
+						<li>Current ICU occupancy numbers (in the demo, we have used our forecasts and the assumptions above). </li>
+					</ol>
+					<p>
 
 					<header class="major special">
 						<p>The demo video</p>
