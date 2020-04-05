@@ -5,6 +5,7 @@ import dash_html_components as html
 from dash.dependencies import Input, Output, State
 import flask
 import dash_dangerously_set_inner_html
+from src.forecast import plotly_create_html
 
 server = flask.Flask(__name__)
 app = dash.Dash(__name__, server=server, assets_folder='assets')
@@ -18,6 +19,7 @@ app.layout = html.Div([
 
 # TODO: Update this
 DATE = '2020-04-03'
+forecast_figure = plotly_create_html.main()
 
 layout_optimizing = html.Div(children=[
     # Not sure if this block is needed
@@ -353,7 +355,7 @@ layout_forecasting = html.Div(children=[
             html.P("Please note that since we have found no publically available data about how many ICU beds are occupied in the different regions, "
                    " these forecasts depend on assumptions regarding how long the patients stay in the ICU. If some numbers"
                    " look unintuitive, this is likely the reason."),
-
+            dcc.Graph(figure=forecast_figure)
         ]),
     ]),
 

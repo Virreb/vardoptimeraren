@@ -24,6 +24,8 @@ COPY requirements.txt /hack-the-crisis/requirements.txt
 WORKDIR /hack-the-crisis
 RUN pip install -r requirements.txt
 
+# TODO: remove the cplex file
+
 # open up port for webserver
 EXPOSE 5000
 

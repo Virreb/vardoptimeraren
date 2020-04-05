@@ -5,7 +5,7 @@ def main():
 	import plotly.graph_objects as go
 	import plotly.offline as po
 
-	df = pd.read_csv('../../src/forecast/plotly_data.csv')
+	df = pd.read_csv('src/forecast/plotly_data.csv')
 	df = df.rename(columns={'iva_corrected': 'iva'})
 	df['value'] = [df.iva.iloc[i] if not math.isnan(df.iva.iloc[i]) else df.predicted.iloc[i] for i in range(0, df.shape[0])]
 	df['color'] = ['#7DDCDC' if not math.isnan(df.iva.iloc[i]) else '#FE465B' for i in range(0, df.shape[0])]
@@ -45,10 +45,10 @@ def main():
 
 	layout = go.Layout(
 	    updatemenus=updatemenus,
-	    #title=go.layout.Title(
-	    #   text='Number of patients in ICU over time',
-	    #    font=dict(size=24)
-	    #),
+	    title=go.layout.Title(
+	       text='Number of active ICU patients (blue=actual, red=prediction)',
+	        font=dict(size=18)
+	    ),
 	    
 	    xaxis=go.layout.XAxis(
 	        title=go.layout.xaxis.Title(
@@ -59,7 +59,7 @@ def main():
 	    
 	    yaxis=go.layout.YAxis(
 	        title=go.layout.yaxis.Title(
-	            text='Number of active ICU patients',
+	            text='Nbr active ICU patients',
 	            font=dict(size=18)
 	        )
 	    ),
@@ -72,8 +72,9 @@ def main():
 	    xaxis_tickformat='%d %B',
 	    #showlegend=True
 	)
-	figure.write_html('../../plotly_graph.html')
+	# figure.write_html('../../plotly_graph.html')
 
+	return figure
 
-if __name__ == '__main__':
-	main()
+# if __name__ == '__main__':
+# 	main()
