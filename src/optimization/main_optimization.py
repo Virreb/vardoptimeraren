@@ -88,6 +88,7 @@ def run_optimization(start_day="2020-3-28",
     from src.optimization import process_solution
     mdl = process_solution.process_allocations(mdl)
     mdl,current_df = process_solution.process_final_data(mdl,current_df,trend_dict,today,target_day)
+    final_map_without_opt = process_solution.plot_final_state_without_opt(mdl,current_df,geojson=path_to_static_geojson)
     final_map = process_solution.plot_final_state(mdl,current_df,geojson=path_to_static_geojson)
     
-    return initial_map, final_map, mdl.allocation_plan
+    return initial_map, final_map, final_map_without_opt, mdl.allocation_plan
