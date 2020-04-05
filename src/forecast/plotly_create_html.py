@@ -8,7 +8,7 @@ def main():
 	df = pd.read_csv('../../src/forecast/plotly_data.csv')
 	df = df.rename(columns={'iva_corrected': 'iva'})
 	df['value'] = [df.iva.iloc[i] if not math.isnan(df.iva.iloc[i]) else df.predicted.iloc[i] for i in range(0, df.shape[0])]
-	df['color'] = ['#FE465B' if not math.isnan(df.iva.iloc[i]) else '#7DDCDC' for i in range(0, df.shape[0])]
+	df['color'] = ['#7DDCDC' if not math.isnan(df.iva.iloc[i]) else '#FE465B' for i in range(0, df.shape[0])]
 	df['name'] = ['prediction' if not math.isnan(df.iva.iloc[i]) else 'actual' for i in range(0, df.shape[0])]
 
 
@@ -19,7 +19,7 @@ def main():
 	    y=df[df['Region'] == regioner[0]]['value'],
 	    #name=df[df['Region'] == regioner[0]]['name'],
 	    #marker={'color': 'red'}
-	    marker={'color': df[df['Region'] == regioner[0]]['color']}
+	    marker={'color': df[df['Region'] == regioner[0]]['color']},
 	)
 
 	updatemenus = [
@@ -36,9 +36,7 @@ def main():
 	                     'color': df[df['Region'] == region]['color']
 	                    },
 	                ]
-	            } for region in regioner
-	            
-	            
+	            } for region in regioner   
 	        ],
 	        'direction': 'down',
 	        'showactive': True,
@@ -47,6 +45,25 @@ def main():
 
 	layout = go.Layout(
 	    updatemenus=updatemenus,
+	    #title=go.layout.Title(
+	    #   text='Number of patients in ICU over time',
+	    #    font=dict(size=24)
+	    #),
+	    
+	    xaxis=go.layout.XAxis(
+	        title=go.layout.xaxis.Title(
+	            text='Date',
+	            font=dict(size=18)
+	        )
+	    ),
+	    
+	    yaxis=go.layout.YAxis(
+	        title=go.layout.yaxis.Title(
+	            text='Number of active ICU patients',
+	            font=dict(size=18)
+	        )
+	    ),
+	    
 	)
 
 
