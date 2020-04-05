@@ -4,49 +4,30 @@ Created on Fri Apr  3 09:58:09 2020
 @author: tilda.lundgren
 """
 
-def define_total_undercapacity(mdl,current_df):
+def define_max_overcapacity(mdl,current_df):
     # ----------------------------------------------------------------------- #
-    # Total undercapacity
+    # Max overcapacity
     # ----------------------------------------------------------------------- #  
-    mdl.total_undercapacity = mdl.sum(mdl.max(0,mdl.o_vars[d, mdl.NB_PERIODS] - current_df.at[d,"Capacity"] ) 
-                                  for d in mdl.deps)
-    return mdl
-
-def undercapacity_distribution(mdl,current_df):
-    # ----------------------------------------------------------------------- #
-    # Even distribution of undercapacity
-    # ----------------------------------------------------------------------- #   
+    
+    mdl.over_cap_abs_max = mdl.continuous_var(lb=-100000, name = "over_cap_abs_max")
+    mdl.over_cap_rel_max = mdl.continuous_var(lb=-100000, name = "over_cap_rel_max")
+    
     for d in mdl.deps:
-        undercapacity = mdl.max(0,mdl.o_vars[d, mdl.NB_PERIODS] - current_df.at[d,"Capacity"] )
-        mdl.add_constraint(ct = mdl.max_under >= undercapacity,
-                           ctname = "max_undercapacity_{0}".format(d))
-    return mdl
+        over_cap_abs = mdl.o_vars[d, mdl.NB_PERIODS] - current_df.at[d,"Capacity"] 
+        mdl.add_constraint(ct = mdl.over_cap_abs_max - over_cap_abs >= 0, 
+                           ctname = "max_over_cap_abs_{0}".format(d))
 
-def overcapacity_distribution(mdl, current_df):
-    # ----------------------------------------------------------------------- #
-    # Even distribution of overcapacity
-    # ----------------------------------------------------------------------- #   
     for d in mdl.deps:
-        overcapacity = mdl.max(0, current_df.at[d,"Capacity"] - mdl.o_vars[d, mdl.NB_PERIODS])
-        mdl.add_constraint(ct = mdl.max_over >= overcapacity,
-                           ctname = "max_relative_overcapacity_{0}".format(d))
+        over_cap_rel = (mdl.o_vars[d, mdl.NB_PERIODS] - current_df.at[d,"Capacity"])/current_df.at[d,"Capacity"]
+        mdl.add_constraint(ct = mdl.over_cap_rel_max - over_cap_rel >= 0, 
+                           ctname = "max_over_cap_rel_{0}".format(d))
+
     return mdl
 
 def define_distance_measures(mdl):
     # ----------------------------------------------------------------------- #
     # Minimize patient transfers
     # ----------------------------------------------------------------------- #   
-    mdl.nb_long_transfers = mdl.sum(mdl.x_vars[d1, d2, t] 
-                                for d1 in mdl.deps 
-                                for d2 in mdl.deps 
-                                if mdl.is_long[d1][d2] 
-                                for t in mdl.transfer_periods)
-    
-    mdl.nb_short_transfers = mdl.sum(mdl.x_vars[d1, d2, t] 
-                                 for d1 in mdl.deps 
-                                 for d2 in mdl.deps 
-                                 if not mdl.is_long[d1][d2] 
-                                 for t in mdl.transfer_periods)
     
     mdl.nb_patient_transfers = mdl.sum(mdl.y_vars[d1, d2, t] 
                                  for d1 in mdl.deps 
@@ -60,20 +41,16 @@ def define_distance_measures(mdl):
     return mdl
 
 def summarize_objectives(mdl,
-                         w_total_undercapacity = 100,
-                         w_max_under = 100,
-                         w_max_over = 1, 
-                         w_nb_patient_transfers = 1,
-                         w_km_patient_transfers = 0.01,
-                         w_nb_long_transfers = 0.01):
+                         w_overcap_abs = 1,
+                         w_overcap_rel = 1,
+                         w_nb_trans = 1, 
+                         w_km_trans = 1):
     
     # ----------------------------------------------------------------------- #
     # Summarize all
     # ----------------------------------------------------------------------- #   
-    mdl.minimize(w_total_undercapacity   * mdl.total_undercapacity +\
-                 w_max_under             * mdl.max_under + \
-                 w_max_over              * mdl.max_over + \
-                 w_nb_patient_transfers  * mdl.nb_patient_transfers + \
-                 w_km_patient_transfers  * mdl.km_patient_transfers + \
-                 w_nb_long_transfers     * mdl.nb_long_transfers)
+    mdl.minimize(w_overcap_abs  * 1 * mdl.over_cap_abs_max +\
+                 w_overcap_rel  * 10  * mdl.over_cap_rel_max +\
+                 w_nb_trans     * 0.01 * mdl.nb_patient_transfers + \
+                 w_km_trans     * 0.001 * mdl.km_patient_transfers )
     return mdl

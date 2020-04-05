@@ -6,36 +6,28 @@ import pandas as pd
 from datetime import date
 import folium
  
-def read_and_process_data(trend_data, region_data, today = date(2020,3,29)):
+def read_and_process_data(trend_data, region_data, today = date(2020,4,3)):
     
-    # Read historical Covid-19-data
-    iva_df = pd.read_csv(trend_data,sep=";")
-    iva_df.Region = iva_df.Region.apply(lambda x: x.replace("Region ", ""))
-    iva_df = iva_df.set_index(iva_df.Region)
-    iva_df = iva_df.drop(["Region"],axis=1)
-    iva_df = iva_df.drop('Hela riket')
-    
-    # Process historical data
-    data_df = pd.DataFrame(columns=["Date","Region","IVA"])
-    for ind, row in iva_df.iterrows(): 
-        temp = pd.DataFrame(data = row,index= row.index)
-        temp.columns = ["IVA"]
-        temp["Region"] = ind
-        temp["Date"] = temp.index
-        temp = temp.reset_index(drop=True)
-        data_df = data_df.append(temp)
-    data_df = data_df.reset_index(drop=True)
-    
+    # Read forecast
+    fc_df = pd.read_csv(trend_data,sep=",")
+    fc_df.iva.fillna(fc_df.predicted, inplace=True)
+    fc_df = fc_df.drop(columns=['Unnamed: 0',"predicted"])
+    fc_df = fc_df.rename(columns={"date": "Date", "iva": "IVA"})
+    fc_df.Region = fc_df.Region.apply(lambda x: x.replace("Region ", ""))
+    fc_df = fc_df.replace("Örebro län", "Örebro")
+    fc_df = fc_df.replace("Jönköpings län", "Jönköping")
+    fc_df = fc_df.replace("Kalmar län", "Kalmar")
+
     # Read region data
     region_df = pd.read_csv(region_data,sep=";")
     region_df.Region = region_df.Region.apply(lambda x: x.replace("Region ", ""))
-        
+
     # Extract current still image
-    current_df = data_df[data_df["Date"] == today.strftime("%Y-%m-%d")]
-    
+    current_df = fc_df[fc_df["Date"] == today.strftime("%Y-%m-%d")]
+
     # Merge current_df with region data
     current_df = current_df.merge(region_df, on=['Region'], how='left')
-    
+
     # Process current_df
     current_df["UnderCapacity"] = current_df["IVA"] - current_df["Capacity"]
     current_df["UnderCapacity"] = current_df["UnderCapacity"].apply(lambda x: max(0,x))
@@ -43,15 +35,15 @@ def read_and_process_data(trend_data, region_data, today = date(2020,3,29)):
     current_df["SurplusCapacity"] = current_df["SurplusCapacity"].apply(lambda x: max(0,x))
     current_df["Rate"] = current_df["IVA"] / current_df["Capacity"]
     current_df = current_df.set_index(current_df.Region)
-    
+
     # Region data
     trend_dict = {}
     for d in list(region_df.Region):
-        data = data_df[data_df.Region==d]
+        data = fc_df[fc_df.Region==d]
         data = data.groupby('Date').sum().reset_index()
         data['Date']=pd.to_datetime(data['Date'])
         data = data.sort_values(by=['Date'], ascending=False)
-        trend_dict[d] = data  
+        trend_dict[d] = data
         
     return current_df, trend_dict
 

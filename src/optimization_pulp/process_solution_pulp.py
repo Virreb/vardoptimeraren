@@ -4,6 +4,69 @@ Created on Fri Apr  3 10:14:44 2020
 @author: tilda.lundgren
 """
 import pandas as pd
+import folium
+from collections import namedtuple
+import numpy as np
+
+def get_arrows(locations, color='black', size=6, n_arrows=3): 
+    '''
+    Get a list of correctly placed and rotated 
+    arrows/markers to be plotted
+    Parameters
+    locations : list of lists of lat lons that represent the 
+                start and end of the line. 
+                eg [[41.1132, -96.1993],[41.3810, -95.8021]]
+    arrow_color : default is 'blue'
+    size : default is 6
+    n_arrows : number of arrows to create.  default is 3    Return
+    list of arrows/markers
+    '''
+    
+    Point = namedtuple('Point', field_names=['lat', 'lon'])
+    
+    # creating point from our Point named tuple
+    p1 = Point(locations[0][0], locations[0][1])
+    p2 = Point(locations[1][0], locations[1][1])
+    
+    # getting the rotation needed for our marker.  
+    rotation = get_bearing(p1, p2) - 90
+    
+    # get an evenly space list of lats and lons for our arrows
+    arrow_lats = np.linspace(p1.lat, p2.lat, n_arrows + 2)[1:n_arrows+1]
+    arrow_lons = np.linspace(p1.lon, p2.lon, n_arrows + 2)[1:n_arrows+1]  
+    
+    #creating each "arrow" and appending them to our arrows list
+    arrows = []
+    for points in zip(arrow_lats, arrow_lons):
+        arrows.append(folium.RegularPolygonMarker(location=points, 
+                      fill_color=color, color=color, number_of_sides=3, 
+                      radius=size, rotation=rotation))
+    return arrows
+
+def get_bearing(p1, p2):   
+    '''
+    Returns compass bearing from p1 to p2
+    Parameters
+    p1 : namedtuple with lat lon
+    p2 : namedtuple with lat lon
+    Return
+    compass bearing of type float
+    Notes
+    Based on https://gist.github.com/jeromer/2005586
+    '''
+    
+    long_diff = np.radians(p2.lon - p1.lon)
+    lat1 = np.radians(p1.lat)
+    lat2 = np.radians(p2.lat)
+    
+    x = np.sin(long_diff) * np.cos(lat2)
+    y = (np.cos(lat1) * np.sin(lat2) 
+        - (np.sin(lat1) * np.cos(lat2) 
+        * np.cos(long_diff)))    
+    bearing = np.degrees(np.arctan2(x, y))
+    if bearing < 0:
+        return bearing + 360
+    return bearing
 
 def process_allocations(mdl):
     
@@ -39,14 +102,79 @@ def process_final_data(mdl,current_df,trend_dict,today,target_day):
     current_df["FinalSurplusCapacity"] = current_df["FinalSurplusCapacity"].apply(lambda x: max(0,x))
     current_df["Allocation"] = current_df["Final"] - current_df["IVA"] - current_df["OrganicGrowth"] 
     current_df["RateFinal"] = current_df["Final"]/current_df["Capacity"]
+    current_df["FinalWithoutOpt"] = current_df["IVA"] + current_df["OrganicGrowth"]
+    current_df["FinalWithoutOptRate"] = current_df["FinalWithoutOpt"] / current_df["Capacity"]
+    current_df["FinalSurplusCapacityWithoutOpt"] = current_df["Capacity"] - current_df["FinalWithoutOpt"]
+    current_df["FinalSurplusCapacityWithoutOpt"] = current_df["FinalSurplusCapacityWithoutOpt"].apply(lambda x: max(0,x))
     
     return mdl, current_df
 
+def plot_final_state_without_opt(mdl,current_df,geojson):
+    
+    # Initiate map
+    m = folium.Map(location=[62, 20], zoom_start=5)
+    
+    # Define styling rules for counties
+    def style_function(feature):
+        d = feature['properties']['name']    
+    
+        if current_df.at[d,"FinalWithoutOptRate"] < 0.5:
+            if current_df.at[d,"FinalSurplusCapacityWithoutOpt"] > 3:
+                color = '#7AA826' #green
+            else: 
+                color = '#FFCA2D' #yellow
+        elif 0.5 <= current_df.at[d,"FinalWithoutOptRate"] < 0.9:
+            color='#FFCA2D' #yellow
+        elif 0.9 <= current_df.at[d,"FinalWithoutOptRate"] <= 1:
+            color='#EA830E' #orange   
+        elif 1 < current_df.at[d,"FinalWithoutOptRate"]:
+            color='#BF2C2A'  #red 
+    
+        return {'fillOpacity': 0.4,'weight': 0.5,
+                'color': 'black','fillColor': color}
+    
+    # Import geojson data and apply styling rule
+    geo = folium.GeoJson(
+        geojson,
+        name='geojson',
+        style_function=style_function
+    ).add_to(m)
+    
+    # Add a clickable circle to each county
+    for idx, row in current_df.iterrows():    
+    
+        # Define styling rules
+        if row.FinalWithoutOptRate < 0.5:
+            if row.FinalSurplusCapacityWithoutOpt > 3:
+                color = '#7AA826' #green
+            else: 
+                color = '#FFCA2D' #yellow
+        elif 0.5 <= row.FinalWithoutOptRate < 0.9:
+            color='#FFCA2D' #yellow
+        elif 0.9 <= row.FinalWithoutOptRate <= 1:
+            color='#EA830E' #orange    
+        elif 1 < row.FinalWithoutOptRate:
+            color='#BF2C2A'  #red  
+    
+        # Draw circle
+        folium.Circle(
+            radius= 7000 + row.Final*200,
+            location=[row.Lat, row.Long],
+            popup=folium.Popup('<b>'+row.Region+'</b><br><br>From '+str(row.IVA)+' to '+str(row.FinalWithoutOpt)+\
+                               ' IVA<br>Organic growth: '+str(row.OrganicGrowth)+\
+                               '<br>Allocation: 0'+\
+                               '<br>Capacity: '+str(row.Capacity),
+                               max_width=450,min_width=150),
+            color=color,
+            fill=True,
+            fill_color=color,
+            tooltip="Click here!",
+        ).add_to(m)
+    
+    return m
+
 def plot_final_state(mdl,current_df,geojson):
-    
-    from folium_scripts_pulp import get_arrows
-    import folium
-    
+        
     # Initiate map
     m = folium.Map(location=[62, 20], zoom_start=5)
     
@@ -56,21 +184,21 @@ def plot_final_state(mdl,current_df,geojson):
         
         if current_df.at[d,"RateFinal"] < 0.5:
             if current_df.at[d,"FinalSurplusCapacity"] > 3:
-                color = 'grey'
+                color = '#7AA826' #green
             else: 
-                color = 'green'
+                color = '#FFCA2D' #yellow
         elif 0.5 <= current_df.at[d,"RateFinal"] < 0.9:
-            color='green'
+            color='#FFCA2D' #yellow
         elif 0.9 <= current_df.at[d,"RateFinal"] <= 1:
-            color='orange'   
+            color='#EA830E' #orange   
         elif 1 < current_df.at[d,"RateFinal"]:
-            color='red'  
+            color='#BF2C2A'  #red 
             
-        return {'fillOpacity': 0.3,'weight': 0.5,
+        return {'fillOpacity': 0.4,'weight': 0.5,
                 'color': 'black','fillColor': color}
     
     # Import geojson data and apply styling rule
-    folium.GeoJson(
+    geo = folium.GeoJson(
         geojson,
         name='geojson',
         style_function=style_function
@@ -82,24 +210,24 @@ def plot_final_state(mdl,current_df,geojson):
         # Define styling rules
         if row.RateFinal < 0.5:
             if row.FinalSurplusCapacity > 3:
-                color = 'grey'
+                color = '#7AA826' #green
             else: 
-                color = 'green'
+                color = '#FFCA2D' #yellow
         elif 0.5 <= row.RateFinal < 0.9:
-            color='green'
+            color='#FFCA2D' #yellow
         elif 0.9 <= row.RateFinal <= 1:
-            color='orange'   
+            color='#EA830E' #orange    
         elif 1 < row.RateFinal:
-            color='red'  
+            color='#BF2C2A'  #red  
             
         # Draw circle
         folium.Circle(
             radius= 7000 + row.Final*200,
             location=[row.Lat, row.Long],
-            popup=folium.Popup('<b>'+row.Region+'</b><br><br>Från '+str(row.IVA)+' till '+str(row.Final)+\
-                               ' IVA<br>Egen tillväxt: '+str(row.OrganicGrowth)+\
-                               '<br>Allokering: '+str(row.Allocation)+\
-                               '<br>Kapacitet: '+str(row.Capacity),
+            popup=folium.Popup('<b>'+row.Region+'</b><br><br>From '+str(row.IVA)+' to '+str(row.Final)+\
+                               ' IVA<br>Organic growth: '+str(row.OrganicGrowth)+\
+                               '<br>Allocation: '+str(row.Allocation)+\
+                               '<br>Capacity: '+str(row.Capacity),
                                max_width=450,min_width=150),
             color=color,
             fill=True,
@@ -116,9 +244,9 @@ def plot_final_state(mdl,current_df,geojson):
         
         # Define tooltop
         if nb == 1:
-            tooltip = str(nb)+" patient från "+d1+" till "+d2
+            tooltip = str(nb)+" patient from "+d1+" to "+d2
         elif nb > 1:
-            tooltip = str(nb)+" patienter från "+d1+" till "+d2
+            tooltip = str(nb)+" patients from "+d1+" to "+d2
         
         # Draw line
         pl = folium.PolyLine(coordinates, color="black", weight=3,tooltip=tooltip)
