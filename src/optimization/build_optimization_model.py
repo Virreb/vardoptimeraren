@@ -53,12 +53,6 @@ def define_model_variables(mdl):
     mdl.o_vars = {(d,p): mdl.integer_var(name="o_{0}_{1}".format(d,p), lb = 0) 
                   for d in mdl.deps for p in mdl.all_periods}
     
-    # Maximum undercapacity among departments
-    mdl.max_under = mdl.continuous_var(lb=0, name = "max_under")
-    
-    # Maximum overcapacity among departments
-    mdl.max_over = mdl.continuous_var(lb=0, name = "max_over")
-    
     return mdl
 
 def calculate_distances(mdl, current_df, path_to_static_distances):
