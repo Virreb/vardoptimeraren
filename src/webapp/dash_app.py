@@ -144,37 +144,37 @@ layout_optimizing = html.Div(children=[
         html.Div(style={'width': '30%', 'display': 'inline-block', 'margin-left': '5%', 'margin-bottom': '5%'}, children=[
             html.H3('Set parameters'),
             html.Div(children=[
-                dcc.Markdown('Absolute overcapacity'),
+                dcc.Markdown('Even distribution of undercapacity'),
                 dcc.Slider(
-                    id='slider_w_overcap_abs',
+                    id='slider_w_undercap',
                     min=0,
                     max=10,
                     step=0.1,
-                    value=5,
+                    value=1,
                     marks={0: '0', 10: '10'}
                 ),
             ]),
 
             html.Div(children=[
-                dcc.Markdown('Relative overcapacity'),
+                dcc.Markdown('Even distribution of overcapacity'),
                 dcc.Slider(
-                    id='slider_w_overcap_rel',
+                    id='slider_w_overcap',
                     min=0,
                     max=10,
                     step=0.1,
-                    value=5,
+                    value=1,
                     marks={0: '0', 10: '10'}
                 ),
             ]),
 
             html.Div(children=[
-                dcc.Markdown('Total number of transfers'),
+                dcc.Markdown('Total number of patient transfers'),
                 dcc.Slider(
                     id='slider_w_nb_trans',
                     min=0,
                     max=10,
                     step=0.1,
-                    value=5,
+                    value=1,
                     marks={0: '0', 10: '10'}
                 ),
             ]),
@@ -186,7 +186,7 @@ layout_optimizing = html.Div(children=[
                     min=0,
                     max=10,
                     step=0.1,
-                    value=5,
+                    value=1,
                     marks={0: '0', 10: '10'}
                 ),
             ]),
@@ -388,19 +388,19 @@ layout_forecasting = html.Div(children=[
         Input('button_run', 'n_clicks'),
     ],
     state=[
-        State(component_id='slider_w_overcap_abs', component_property='value'),
-        State(component_id='slider_w_overcap_rel', component_property='value'),
+        State(component_id='slider_w_undercap', component_property='value'),
+        State(component_id='slider_w_overcap', component_property='value'),
         State(component_id='slider_w_nb_trans', component_property='value'),
         State(component_id='slider_w_km_trans', component_property='value')
     ]
 )
-def update_maps(nbr_run_clicks, w_overcap_abs, w_overcap_rel, w_nb_trans, w_km_trans):
+def update_maps(nbr_run_clicks, w_undercap, w_overcap, w_nb_trans, w_km_trans):
     from src.optimization.main_optimization import run_optimization
 
     initial_map, final_map, final_map_wo_opt, allocation_plan = \
         run_optimization(
-            w_overcap_abs=w_overcap_abs,
-            w_overcap_rel=w_overcap_rel,
+            w_undercap=w_undercap,
+            w_overcap=w_overcap,
             w_nb_trans=w_nb_trans,
             w_km_trans=w_km_trans,
             start_day=DATE
