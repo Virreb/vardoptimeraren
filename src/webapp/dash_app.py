@@ -47,91 +47,42 @@ layout_optimizing = html.Div(children=[
     ]),
     html.A(href='#menu', className='navPanelToggle', children=html.Span(className='fa fa-bars')),
 
-    # First section
+    #FIRST Section
     html.Section(id="main", className="wrapper", children=[
         html.Div(className="container", children=[
-            html.Header(className="major special", children=[
-                html.H2("Optimizing"),
-                html.P("The problem")
-            ]),
-
-            html.P(children=[
-                "According to ",
-                html.A('Sveriges Radio ',
-                       href='https://omni.se/iva-patienter-har-nu-borjat-flyttas-mellan-regionerna/a/50gb1O'),
-                "regions have already started to reallocate patients and the Swedish government has given "
-                "the national board of Health and Welfare (Socialstyrelsen) ",
-                html.A('the mandate to also reallocate protective gears and other resources',
-                       href='https://www.dn.se/nyheter/sverige/skyddsmaterial-ska-flyttas-mellan-regionerna-historiskt-beslut/'),
-                " between the regions. "
-                ]),
-
-            html.P("Even with perfect information about the future spread of the disease, planning how this reallocation "
-                   "should be pursued is far from trivial. Many different kinds of resources may need to be moved and "
-                   "different objectives will need to be weighed against each other (e.g. overcapacity vs. cost for "
-                   "logistics) while boundary conditions remain intact (e.g. a region can’t treat more patients than "
-                   "its maximum capacity)."),
-            html.Header(className="major special", children=[
-                html.P("The Solution"),
-            ]),
-            html.P("Luckily, there is a good solution for this type of complex, multi-objective problems. "
-                   "In comes mathematical decision optimization!"),
-            html.P(children=[
-                "Decision optimization is a set of frameworks for finding the mathematically optimal solutions for a "
-                   "wide range of different problems within sectors ranging from manufacturing and logistics to finance "
-                   "and telecom. The interested reader can find a more thorough explanation in ",
-                html.A(' this ',
-                       href='https://www.advectas.com/en/blog/what-is-decision-optimisation-and-how-can-it-generate-commercial-value/'),
-                " blog post from our awesome team member Tilda Lundgren. ",
-               "Suffice it to say here that decision optimization is typically done in four stages:",
-                ]),
-
-            html.Ol(children=[
-                html.Li("The problem is formulated mathematically"),
-                html.Li("An objective function is formulated. In reality, this often means deciding how to weigh different objectives against each other. "),
-                html.Li("Boundary conditions are formulated (e.g. no region can have less than 0 patients, and nor can 1.367 patients be sent from one "
-			"region to another but the solution has to be integer-valued)."),
-                html.Li("A large subset of the feasible solution space is tested and the optimization engine "
-                        "converges on an optimal solution."),
-            ]),
-
-            html.P(children=[
-                "Our optimization solution uses our ",
-                html.A("forecasts", href='/forecasting'),
-                " of the number of ICU-cases "
-               "in each region to optimize how many patients should be moved between the different regions. "
-               "The user inputs to what extent different possible objectives (e.g. maximizing overcapacity in the "
-               "healthcare system vs. minimizing long patient transports) should be considered. ",
-            ]),
-
-            html.Header(className="major special", children=[
-                html.P("The Technology"),
-            ]),
-            html.P(children=[
-                "The solution shown here was built in python using the optimization engine ",
-                html.A("IBM CPLEX", href="https://www.ibm.com/se-en/analytics/cplex-optimizer"),
-                ", but we have also created a solution using the open source optimization engine ",
-                html.A("PuLP", href="https://coin-or.github.io/pulp/"),
-                ". This way, the solution is truly open source and engine-independent.",
-                " The solution is visualized through the open source plotting library ",
-                html.A("Folium", href="https://python-visualization.github.io/folium/"),
-                ". Together with the forecasting solution, it was isolated in a ",
-                html.A("Docker", href="https://www.docker.com/why-docker"),
-                " container and deployed on Microsoft Azure App Service."
-            ]),
             html.Header(className="major special", children=[
                 html.H2("Our optimization solution"),
                 html.P("About"),
             ]),
-            html.P("To showcase the broad range of possibilities, we have created an interactive optimization solution"
-                   " for how many patients should be moved between different Swedish regions. The optimizer will "
-                   "take your input in consideration and search for the optimal solution. A full user guide can be found below the map."),
-
-
+            html.P("To showcase the broad range of possibilities within decision optimization, we have created an interactive optimization solution"
+                       " for how many patients should be moved between different Swedish regions. The optimizer will "
+                       "take your input in consideration and search for the optimal solution. Information about decision optimization can be found below."),
+            html.Header(className="major special", children=[
+                html.P("User Guide"),
+            ]),
+            html.P("As a user, you get to define how the trade-off between different possible objections should be "
+                   "handled. To make it simple, we have created a pre-defined list of four different criteria."
+                   "You decide how important each criteria is by toggling the sliders below. "
+                   "A value of 0 (all the way to the left) means that the solver will not care about that objective"
+                   "when searching for an optimal solution, whereas a value of 10 (all the way to the right means "
+                   "that the solver will optimize mainly to meet that criteria. The four criteria are:"),
+            html.Ol(children=[
+                html.Li(children=[html.Strong("Even distribution of absolute capacity"),
+                                  " means that the optimization engine tries to find a solution where absolute surplus capacity is evenly distribution among regions."]),
+                html.Li(children=[html.Strong("Even distribution of relative capacity"),
+                                  " means that the optimization engine tries to find a solution where relative surplus capacity is evenly distribution among regions."]),
+                html.Li(children=[html.Strong("Minimizing the number of patient transfers"),
+                                  " means that the optimization engine tries to find a solution where the number of patients that are transferred is minimized."]),
+                html.Li(children=[html.Strong("Minimizing the total sum of transfer kilometers"),
+                                  " means that the optimization engine tries to find a solution where the total sum of transfer kilometers is minimized."]),
+            ]),
         ]),
+
     ]),
 
-    html.Div(style={'height': '800px', 'margin-bottom': '50px'}, children=[
+    #NEW
+    html.Section(id="main", className="wrapper", children=[
+        html.Div(style={'height': '800px', 'margin-bottom': '50px'}, children=[
         html.Div(style={'width': '30%', 'display': 'inline-block', 'margin-left': '5%', 'margin-bottom': '1%'}, children=[
             html.H3('Set parameters'),
             html.Div(children=[
@@ -223,29 +174,86 @@ layout_optimizing = html.Div(children=[
                                      ),
                      ])
                  ]),
+        ]),
     ]),
 
-    # NEW SECTION
+    # Second section
     html.Section(id="main", className="wrapper", children=[
         html.Div(className="container", children=[
             html.Header(className="major special", children=[
-                html.P("User Guide"),
+                html.H2("About Optimizing"),
+                html.P("The problem")
             ]),
-            html.P("As a user, you get to define how the trade-off between different possible objections should be "
-                   "handled. To make it simple, we have created a pre-defined list of four different criteria."
-                   "You decide how important each criteria is by toggling the sliders below. "
-                   "A value of 0 (all the way to the left) means that the solver will not care about that objective"
-                   "when searching for an optimal solution, whereas a value of 10 (all the way to the right means "
-                   "that the solver will optimize mainly to meet that criteria. The four criteria are:"),
+
+            html.P(children=[
+                "According to ",
+                html.A('Sveriges Radio ',
+                       href='https://omni.se/iva-patienter-har-nu-borjat-flyttas-mellan-regionerna/a/50gb1O'),
+                "regions have already started to reallocate patients and the Swedish government has given "
+                "the national board of Health and Welfare (Socialstyrelsen) ",
+                html.A('the mandate to also reallocate protective gears and other resources',
+                       href='https://www.dn.se/nyheter/sverige/skyddsmaterial-ska-flyttas-mellan-regionerna-historiskt-beslut/'),
+                " between the regions. "
+                ]),
+
+            html.P("Even with perfect information about the future spread of the disease, planning how this reallocation "
+                   "should be pursued is far from trivial. Many different kinds of resources may need to be moved and "
+                   "different objectives will need to be weighed against each other (e.g. overcapacity vs. cost for "
+                   "logistics) while boundary conditions remain intact (e.g. a region can’t treat more patients than "
+                   "its maximum capacity)."),
+            html.Header(className="major special", children=[
+                html.P("The Solution"),
+            ]),
+            html.P("Luckily, there is a good solution for this type of complex, multi-objective problems. "
+                   "In comes mathematical decision optimization!"),
+            html.P(children=[
+                "Decision optimization is a set of frameworks for finding the mathematically optimal solutions for a "
+                   "wide range of different problems within sectors ranging from manufacturing and logistics to finance "
+                   "and telecom. The interested reader can find a more thorough explanation in ",
+                html.A(' this ',
+                       href='https://www.advectas.com/en/blog/what-is-decision-optimisation-and-how-can-it-generate-commercial-value/'),
+                " blog post from our awesome team member Tilda Lundgren. ",
+               "Suffice it to say here that decision optimization is typically done in four stages:",
+                ]),
+
             html.Ol(children=[
-                html.Li(children=[html.Strong("Even distribution of absolute capacity"), " means that the optimization engine tries to find a solution where absolute surplus capacity is evenly distribution among regions."]),
-                html.Li(children=[html.Strong("Even distribution of relative capacity"), " means that the optimization engine tries to find a solution where relative surplus capacity is evenly distribution among regions."]),
-                html.Li(children=[html.Strong("Minimizing the number of patient transfers"), " means that the optimization engine tries to find a solution where the number of patients that are transferred is minimized."]),
-                html.Li(children=[html.Strong("Minimizing the total sum of transfer kilometers"), " means that the optimization engine tries to find a solution where the total sum of transfer kilometers is minimized."]),
+                html.Li("The problem is formulated mathematically"),
+                html.Li("An objective function is formulated. In reality, this often means deciding how to weigh different objectives against each other. "),
+                html.Li("Boundary conditions are formulated (e.g. no region can have less than 0 patients, and nor can 1.367 patients be sent from one "
+			"region to another but the solution has to be integer-valued)."),
+                html.Li("A large subset of the feasible solution space is tested and the optimization engine "
+                        "converges on an optimal solution."),
             ]),
+
+            html.P(children=[
+                "Our optimization solution uses our ",
+                html.A("forecasts", href='/forecasting'),
+                " of the number of ICU-cases "
+               "in each region to optimize how many patients should be moved between the different regions. "
+               "The user inputs to what extent different possible objectives (e.g. maximizing overcapacity in the "
+               "healthcare system vs. minimizing long patient transports) should be considered. ",
+            ]),
+
+            html.Header(className="major special", children=[
+                html.P("The Technology"),
+            ]),
+            html.P(children=[
+                "The solution shown here was built in python using the optimization engine ",
+                html.A("IBM CPLEX", href="https://www.ibm.com/se-en/analytics/cplex-optimizer"),
+                ", but we have also created a solution using the open source optimization API ",
+                html.A("PuLP", href="https://coin-or.github.io/pulp/"),
+                ". This way, the solution is truly open source and engine-independent.",
+                " The solution is visualized through the open source plotting library ",
+                html.A("Folium", href="https://python-visualization.github.io/folium/"),
+                ". Together with the forecasting solution, it was isolated in a ",
+                html.A("Docker", href="https://www.docker.com/why-docker"),
+                " container and deployed on Microsoft Azure App Service."
+            ]),
+
 
         ]),
     ]),
+
 
     html.Footer(id='footer', children=[
         html.Div(className='container', children=[
