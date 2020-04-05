@@ -4,9 +4,9 @@ Created on Fri Apr  3 08:59:33 2020
 @author: tilda.lundgren
 """
 
-def run_optimization(start_day="2020-3-28", 
+def run_optimization(start_day="2020-4-3", 
                      time_horizon=3, 
-                     path_to_trend_data = "../../data/iva_kumulativ.csv",
+                     path_to_trend_data = "../../src/forecast/forecast.csv",
                      path_to_static_region_data = "../../data/regions.csv",
                      path_to_static_geojson = "../../data/geocounties.geojson",
                      path_to_static_distances = "../../data/distances.pickle",
