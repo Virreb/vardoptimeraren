@@ -46,7 +46,7 @@ def run_model(predict_from_date):
 def results(input_data, output_data):
     results = output_data[['date', 'Region', 'predicted_nbr_in_3_days']]
     utskrivningar = input_data[['date', 'Region', 'iva']]
-    utskrivningar['date'] = [str(datetime.strptime(day, '%Y-%m-%d').date()+timedelta(days=10)) for day in utskrivningar['date']]
+    utskrivningar['date'] = [str(datetime.strptime(day, '%Y-%m-%d').date()+timedelta(days=12)) for day in utskrivningar['date']]
     utskrivningar.columns = ['date', 'Region', 'utskrivningar']
     results['date'] = [str(datetime.strptime(day, '%Y-%m-%d').date()+timedelta(days=3)) for day in results['date']]
     results.columns = ['date', 'Region', 'predicted']
