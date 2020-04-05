@@ -17,17 +17,19 @@ app.layout = html.Div([
     html.Div(id='page-content')
 ])
 
+app.title = 'Vårdoptimeraren'
+
 # TODO: Update this
 DATE = '2020-04-03'
 forecast_figure = plotly_create_html.main()
 
 layout_optimizing = html.Div(children=[
-    # Not sure if this block is needed
-    # html.Header(children=[
-    #     html.Title('Vårdoptimeraren'),
-    #     html.Meta(name='viewport', charSet='utf-8', content='width=device-width initial-scale=1'),
-    #     html.Link(rel='stylesheet', href='assets/main.css'),
-    # ]),
+
+     # html.Header(children=[
+     #     html.Title('Vårdoptimeraren'),
+     #     html.Meta(name='viewport', charSet='utf-8', content='width=device-width initial-scale=1'),
+     #     html.Link(rel='stylesheet', href='assets/main.css'),
+     # ]),
 
     html.Header(id='header', children=[
         html.H1(children=[
@@ -122,30 +124,15 @@ layout_optimizing = html.Div(children=[
                 html.P("About"),
             ]),
             html.P("To showcase the broad range of possibilities, we have created an interactive optimization solution"
-                   "for how many patients should be moved between different Swedish regions."),
-            html.Header(className="major special", children=[
-                html.P("User Guide"),
-            ]),
-            html.P("As a user, you get to define how the trade-off between different possible objections should be "
-                   "handled. To make it simple, we have created a pre-defined list of four different criteria."
-                   "You decide how important each criteria is by toggling the sliders below. "
-                   "A value of 0 (all the way to the left) means that the solver will not care about that objective"
-                   "when searching for an optimal solution, whereas a value of 10 (all the way to the right means "
-                   "that the solver will optimize mainly to meet that criteria. The four criteria are:"),
-            html.Ol(children=[
-                html.Li(children=[html.Strong("Even distribution of absolute capacity"), " means that the optimization engine tries to find a solution where absolute surplus capacity is evenly distribution among regions."]),
-                html.Li(children=[html.Strong("Even distribution of relative capacity"), " means that the optimization engine tries to find a solution where relative surplus capacity is evenly distribution among regions."]),
-                html.Li(children=[html.Strong("Minimizing the number of patient transfers"), " means that the optimization engine tries to find a solution where the number of patients that are transferred is minimized."]),
-                html.Li(children=[html.Strong("Minimizing the total sum of transfer kilometers"), " means that the optimization engine tries to find a solution where the total sum of transfer kilometers is minimized."]),
-            ]),
-            html.Header(className="major special", children=[
-                html.P("Try it out!"),
-            ]),
+                   " for how many patients should be moved between different Swedish regions. The optimizer will "
+                   "take your input in consideration and search for the optimal solution. A full user guide can be found below the map."),
+
+
         ]),
     ]),
 
     html.Div(style={'height': '800px', 'margin-bottom': '50px'}, children=[
-        html.Div(style={'width': '30%', 'display': 'inline-block', 'margin-left': '5%', 'margin-bottom': '30%'}, children=[
+        html.Div(style={'width': '30%', 'display': 'inline-block', 'margin-left': '5%', 'margin-bottom': '1%'}, children=[
             html.H3('Set parameters'),
             html.Div(children=[
                 dcc.Markdown('Even distribution of undercapacity'),
@@ -213,7 +200,6 @@ layout_optimizing = html.Div(children=[
         # TODO: Fix styling and positioning of buttons
         html.Div(style={'width': '50%', 'height': '100%', 'display': 'inline-block', 'margin-left': '10%'},
                  children=[
-                     html.H3(id='map_title'),
                      html.Div(id='map_output', style={'height': '700px'}),
                      html.Div(style={'display': 'inline-block', 'text-align': 'center', 'position': 'relative', 'margin-left': '7%'},
                               children=[
@@ -237,6 +223,28 @@ layout_optimizing = html.Div(children=[
                                      ),
                      ])
                  ]),
+    ]),
+
+    # NEW SECTION
+    html.Section(id="main", className="wrapper", children=[
+        html.Div(className="container", children=[
+            html.Header(className="major special", children=[
+                html.P("User Guide"),
+            ]),
+            html.P("As a user, you get to define how the trade-off between different possible objections should be "
+                   "handled. To make it simple, we have created a pre-defined list of four different criteria."
+                   "You decide how important each criteria is by toggling the sliders below. "
+                   "A value of 0 (all the way to the left) means that the solver will not care about that objective"
+                   "when searching for an optimal solution, whereas a value of 10 (all the way to the right means "
+                   "that the solver will optimize mainly to meet that criteria. The four criteria are:"),
+            html.Ol(children=[
+                html.Li(children=[html.Strong("Even distribution of absolute capacity"), " means that the optimization engine tries to find a solution where absolute surplus capacity is evenly distribution among regions."]),
+                html.Li(children=[html.Strong("Even distribution of relative capacity"), " means that the optimization engine tries to find a solution where relative surplus capacity is evenly distribution among regions."]),
+                html.Li(children=[html.Strong("Minimizing the number of patient transfers"), " means that the optimization engine tries to find a solution where the number of patients that are transferred is minimized."]),
+                html.Li(children=[html.Strong("Minimizing the total sum of transfer kilometers"), " means that the optimization engine tries to find a solution where the total sum of transfer kilometers is minimized."]),
+            ]),
+
+        ]),
     ]),
 
     html.Footer(id='footer', children=[
@@ -288,7 +296,7 @@ layout_forecasting = html.Div(children=[
     ]),
     html.A(href='#menu', className='navPanelToggle', children=html.Span(className='fa fa-bars')),
 
-    #First section
+    # First section
     html.Section(id="main", className="wrapper", children=[
         html.Div(className="container", children=[
             html.Header(className="major special", children=[
