@@ -10,9 +10,8 @@ def read_and_process_data(trend_data, region_data, today = date(2020,4,3)):
     
     # Read forecast
     fc_df = pd.read_csv(trend_data,sep=",")
-    fc_df.iva.fillna(fc_df.predicted, inplace=True)
-    fc_df = fc_df.drop(columns=['Unnamed: 0',"predicted"])
-    fc_df = fc_df.rename(columns={"date": "Date", "iva": "IVA"})
+    fc_df.iva_corrected.fillna(fc_df.predicted, inplace=True)
+    fc_df = fc_df.rename(columns={"date": "Date", "iva_corrected": "IVA"})
     fc_df.Region = fc_df.Region.apply(lambda x: x.replace("Region ", ""))
     fc_df = fc_df.replace("Örebro län", "Örebro")
     fc_df = fc_df.replace("Jönköpings län", "Jönköping")
