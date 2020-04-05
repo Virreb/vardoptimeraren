@@ -63,7 +63,7 @@ layout_optimizing = html.Div(children=[
             html.P("As a user, you get to define how the trade-off between different possible objections should be "
                    "handled. To make it simple, we have created a pre-defined list of four different criteria."
                    "You decide how important each criteria is by toggling the sliders below. "
-                   "A value of 0 (all the way to the left) means that the solver will not care about that objective"
+                   "A value of 0 (all the way to the left) means that the solver will not care about that objective "
                    "when searching for an optimal solution, whereas a value of 10 (all the way to the right means "
                    "that the solver will optimize mainly to meet that criteria. The four criteria are:"),
             html.Ol(children=[
