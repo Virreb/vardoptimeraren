@@ -57,12 +57,12 @@ def main():
 	        )
 	    ),
 	    
-	    yaxis=go.layout.YAxis(
-	        title=go.layout.yaxis.Title(
-	            text='Nbr active ICU patients',
-	            font=dict(size=18)
-	        )
-	    ),
+	    # yaxis=go.layout.YAxis(
+	    #     title=go.layout.yaxis.Title(
+	    #         text='Nbr active ICU patients',
+	    #         font=dict(size=18)
+	    #     )
+	    # ),
 	    
 	)
 

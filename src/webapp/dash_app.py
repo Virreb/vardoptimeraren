@@ -20,7 +20,7 @@ app.layout = html.Div([
 app.title = 'Vårdoptimeraren'
 
 # TODO: Update this
-DATE = '2020-04-03'
+DATE = '2020-04-05'
 forecast_figure = plotly_create_html.main()
 
 layout_optimizing = html.Div(children=[

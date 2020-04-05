@@ -6,10 +6,10 @@ Created on Fri Apr  3 08:59:33 2020
 
 def run_optimization(start_day="2020-4-3", 
                      time_horizon=3, 
-                     path_to_trend_data = "../../src/forecast/forecast.csv",
-                     path_to_static_region_data = "../../data/regions.csv",
-                     path_to_static_geojson = "../../data/geocounties.geojson",
-                     path_to_static_distances = "../../data/distances.pickle",
+                     path_to_trend_data = "src/forecast/forecast.csv",
+                     path_to_static_region_data = "data/regions.csv",
+                     path_to_static_geojson = "data/geocounties.geojson",
+                     path_to_static_distances = "data/distances.pickle",
                      solve_time_limit = 60, #seconds
                      w_undercap = 1,
                      w_overcap = 1,
