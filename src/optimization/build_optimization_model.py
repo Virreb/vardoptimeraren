@@ -24,10 +24,10 @@ def define_model_parameters_and_sets(mdl,current_df):
     
     # Define parameters
     mdl.NB_PERIODS = 1
-    mdl.MAX_NB_LONG_TRANSFERS_PER_PERIOD = 100
-    mdl.MAX_CASES_PER_LONG_TRANSFERS = 50
-    mdl.MAX_CASES_PER_SHORT_TRANSFERS = 50
-    mdl.MAX_NB_SHORT_TRANSFERS_PER_DEPARTMENT = 100
+    mdl.MAX_NB_LONG_TRANSFERS_PER_PERIOD = 10000
+    mdl.MAX_CASES_PER_LONG_TRANSFERS = 10000
+    mdl.MAX_CASES_PER_SHORT_TRANSFERS = 10000
+    mdl.MAX_NB_SHORT_TRANSFERS_PER_DEPARTMENT = 10000
     mdl.THRESHOLD_FOR_LONG_DISTANCE = 200
     mdl.EXEMPT = ["Gotland","Jämtland Härjedalen"]
     
