@@ -309,6 +309,9 @@ layout_forecasting = html.Div(children=[
                 html.H2("Our Forecasts"),
                 html.P("Number of needed ICU beds for COVID-19 patients, per region")
             ]),
+            html.P("Please note that since we have found no publically available data about how many ICU beds are occupied in the different regions, "
+                   " these forecasts depend on assumptions regarding how long the patients stay in the ICU. If some numbers"
+                   " look unintuitive, this is likely the reason."),
 
         ]),
     ]),
