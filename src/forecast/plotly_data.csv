@@ -608,66 +608,108 @@ date,Region,iva_corrected,predicted
 2020-04-03,Region Örebro län,8.0,
 2020-04-03,Region Östergötland,22.0,
 2020-04-03,Västra Götalandsregionen,35.0,
-2020-04-04,Region Blekinge,,3.0
-2020-04-04,Region Dalarna,,7.0
-2020-04-04,Region Gotland,,0.0
-2020-04-04,Region Gävleborg,,9.0
-2020-04-04,Region Halland,,6.0
-2020-04-04,Region Jämtland Härjedalen,,3.0
-2020-04-04,Region Jönköpings län,,12.0
-2020-04-04,Region Kalmar län,,2.0
-2020-04-04,Region Kronoberg,,0.0
-2020-04-04,Region Norrbotten,,6.0
-2020-04-04,Region Skåne,,12.0
-2020-04-04,Region Stockholm,,191.0
-2020-04-04,Region Sörmland,,37.0
-2020-04-04,Region Uppsala,,14.0
-2020-04-04,Region Värmland,,0.0
-2020-04-04,Region Västerbotten,,3.0
-2020-04-04,Region Västernorrland,,3.0
-2020-04-04,Region Västmanland,,13.0
-2020-04-04,Region Örebro län,,9.0
-2020-04-04,Region Östergötland,,22.0
-2020-04-04,Västra Götalandsregionen,,44.0
-2020-04-05,Region Blekinge,,2.0
-2020-04-05,Region Dalarna,,6.0
-2020-04-05,Region Gotland,,3.0
-2020-04-05,Region Gävleborg,,10.0
-2020-04-05,Region Halland,,9.0
-2020-04-05,Region Jämtland Härjedalen,,3.0
-2020-04-05,Region Jönköpings län,,13.0
-2020-04-05,Region Kalmar län,,4.0
-2020-04-05,Region Kronoberg,,0.0
-2020-04-05,Region Norrbotten,,5.0
-2020-04-05,Region Skåne,,13.0
-2020-04-05,Region Stockholm,,205.0
-2020-04-05,Region Sörmland,,33.0
-2020-04-05,Region Uppsala,,19.0
-2020-04-05,Region Värmland,,0.0
-2020-04-05,Region Västerbotten,,4.0
-2020-04-05,Region Västernorrland,,3.0
-2020-04-05,Region Västmanland,,11.0
-2020-04-05,Region Örebro län,,10.0
-2020-04-05,Region Östergötland,,27.0
-2020-04-05,Västra Götalandsregionen,,45.0
+2020-04-04,Region Blekinge,2.0,
+2020-04-04,Region Dalarna,4.0,
+2020-04-04,Region Gotland,1.0,
+2020-04-04,Region Gävleborg,12.0,
+2020-04-04,Region Halland,6.0,
+2020-04-04,Region Jämtland Härjedalen,3.0,
+2020-04-04,Region Jönköpings län,13.0,
+2020-04-04,Region Kalmar län,4.0,
+2020-04-04,Region Kronoberg,1.0,
+2020-04-04,Region Norrbotten,7.0,
+2020-04-04,Region Skåne,13.0,
+2020-04-04,Region Stockholm,147.0,
+2020-04-04,Region Sörmland,27.0,
+2020-04-04,Region Uppsala,18.0,
+2020-04-04,Region Värmland,1.0,
+2020-04-04,Region Västerbotten,6.0,
+2020-04-04,Region Västernorrland,3.0,
+2020-04-04,Region Västmanland,10.0,
+2020-04-04,Region Örebro län,9.0,
+2020-04-04,Region Östergötland,17.0,
+2020-04-04,Västra Götalandsregionen,35.0,
+2020-04-05,Region Blekinge,2.0,
+2020-04-05,Region Dalarna,3.0,
+2020-04-05,Region Gotland,1.0,
+2020-04-05,Region Gävleborg,11.0,
+2020-04-05,Region Halland,5.0,
+2020-04-05,Region Jämtland Härjedalen,3.0,
+2020-04-05,Region Jönköpings län,12.0,
+2020-04-05,Region Kalmar län,3.0,
+2020-04-05,Region Kronoberg,1.0,
+2020-04-05,Region Norrbotten,6.0,
+2020-04-05,Region Skåne,12.0,
+2020-04-05,Region Stockholm,135.0,
+2020-04-05,Region Sörmland,27.0,
+2020-04-05,Region Uppsala,17.0,
+2020-04-05,Region Värmland,1.0,
+2020-04-05,Region Västerbotten,5.0,
+2020-04-05,Region Västernorrland,3.0,
+2020-04-05,Region Västmanland,8.0,
+2020-04-05,Region Örebro län,9.0,
+2020-04-05,Region Östergötland,15.0,
+2020-04-05,Västra Götalandsregionen,30.0,
 2020-04-06,Region Blekinge,,2.0
-2020-04-06,Region Dalarna,,4.0
+2020-04-06,Region Dalarna,,5.0
 2020-04-06,Region Gotland,,3.0
-2020-04-06,Region Gävleborg,,12.0
-2020-04-06,Region Halland,,8.0
+2020-04-06,Region Gävleborg,,13.0
+2020-04-06,Region Halland,,7.0
 2020-04-06,Region Jämtland Härjedalen,,2.0
 2020-04-06,Region Jönköpings län,,14.0
 2020-04-06,Region Kalmar län,,4.0
 2020-04-06,Region Kronoberg,,0.0
 2020-04-06,Region Norrbotten,,5.0
 2020-04-06,Region Skåne,,13.0
-2020-04-06,Region Stockholm,,216.0
-2020-04-06,Region Sörmland,,35.0
+2020-04-06,Region Stockholm,,206.0
+2020-04-06,Region Sörmland,,33.0
 2020-04-06,Region Uppsala,,20.0
 2020-04-06,Region Värmland,,1.0
 2020-04-06,Region Västerbotten,,6.0
 2020-04-06,Region Västernorrland,,3.0
-2020-04-06,Region Västmanland,,9.0
+2020-04-06,Region Västmanland,,10.0
 2020-04-06,Region Örebro län,,8.0
-2020-04-06,Region Östergötland,,24.0
-2020-04-06,Västra Götalandsregionen,,50.0
+2020-04-06,Region Östergötland,,23.0
+2020-04-06,Västra Götalandsregionen,,46.0
+2020-04-07,Region Blekinge,,2.0
+2020-04-07,Region Dalarna,,4.0
+2020-04-07,Region Gotland,,3.0
+2020-04-07,Region Gävleborg,,13.0
+2020-04-07,Region Halland,,6.0
+2020-04-07,Region Jämtland Härjedalen,,3.0
+2020-04-07,Region Jönköpings län,,14.0
+2020-04-07,Region Kalmar län,,3.0
+2020-04-07,Region Kronoberg,,3.0
+2020-04-07,Region Norrbotten,,6.0
+2020-04-07,Region Skåne,,15.0
+2020-04-07,Region Stockholm,,201.0
+2020-04-07,Region Sörmland,,33.0
+2020-04-07,Region Uppsala,,23.0
+2020-04-07,Region Värmland,,1.0
+2020-04-07,Region Västerbotten,,6.0
+2020-04-07,Region Västernorrland,,3.0
+2020-04-07,Region Västmanland,,9.0
+2020-04-07,Region Örebro län,,10.0
+2020-04-07,Region Östergötland,,21.0
+2020-04-07,Västra Götalandsregionen,,43.0
+2020-04-08,Region Blekinge,,2.0
+2020-04-08,Region Dalarna,,4.0
+2020-04-08,Region Gotland,,3.0
+2020-04-08,Region Gävleborg,,13.0
+2020-04-08,Region Halland,,5.0
+2020-04-08,Region Jämtland Härjedalen,,2.0
+2020-04-08,Region Jönköpings län,,14.0
+2020-04-08,Region Kalmar län,,3.0
+2020-04-08,Region Kronoberg,,3.0
+2020-04-08,Region Norrbotten,,6.0
+2020-04-08,Region Skåne,,12.0
+2020-04-08,Region Stockholm,,188.0
+2020-04-08,Region Sörmland,,32.0
+2020-04-08,Region Uppsala,,22.0
+2020-04-08,Region Värmland,,1.0
+2020-04-08,Region Västerbotten,,4.0
+2020-04-08,Region Västernorrland,,3.0
+2020-04-08,Region Västmanland,,7.0
+2020-04-08,Region Örebro län,,11.0
+2020-04-08,Region Östergötland,,18.0
+2020-04-08,Västra Götalandsregionen,,39.0
