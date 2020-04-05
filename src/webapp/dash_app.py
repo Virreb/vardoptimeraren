@@ -16,6 +16,9 @@ app.layout = html.Div([
     html.Div(id='page-content')
 ])
 
+# TODO: Update this
+DATE = '2029-04-03'
+
 layout_optimizing = html.Div(children=[
     # Not sure if this block is needed
     # html.Header(children=[
@@ -59,9 +62,6 @@ layout_optimizing = html.Div(children=[
                 " between the regions. "
                 ]),
 
-            # Link 1:
-            # html.A("Sveriges Radio", href="https://omni.se/iva-patienter-har-nu-borjat-flyttas-mellan-regionerna/a/50gb1O"),
-            # html.Br(),
             html.P("Even with perfect information about the future spread of the disease, planning how this reallocation "
                    "should be pursued is far from trivial. Many different kinds of resources may need to be moved and "
                    "different objectives will need to be weighed against each other (e.g. overcapacity vs. cost for "
@@ -72,12 +72,16 @@ layout_optimizing = html.Div(children=[
             ]),
             html.P("Luckily, there is a good solution for this type of complex, multi-objective problems. "
                    "In comes mathematical decision optimization!"),
-            html.P("Decision optimization is a set of frameworks for finding the mathematically optimal solutions for a "
+            html.P(children=[
+                "Decision optimization is a set of frameworks for finding the mathematically optimal solutions for a "
                    "wide range of different problems within sectors ranging from manufacturing and logistics to finance "
-                   "and telecom. The interested reader can find a more thorough explanation in "
-                   "<a href=”https://www.advectas.com/en/blog/what-is-decision-optimisation-and-how-can-it-generate-commercial-value/”>this</a>"
-                   " blog post from our awesome team member Tilda Lundgren."
-                   "Suffice it to say here that decision optimization is typically done in four stages:"),
+                   "and telecom. The interested reader can find a more thorough explanation in ",
+                html.A(' this ',
+                       href='https://www.advectas.com/en/blog/what-is-decision-optimisation-and-how-can-it-generate-commercial-value/'),
+                " blog post from our awesome team member Tilda Lundgren. ",
+               "Suffice it to say here that decision optimization is typically done in four stages:",
+                ]),
+
             html.Ol(children=[
                 html.Li("The problem is formulated mathematically"),
                 html.Li("An objective function is formulated. In reality, this often means deciding how to weigh different objectives against each other. "),
@@ -86,18 +90,28 @@ layout_optimizing = html.Div(children=[
                 html.Li("A large subset of the feasible solution space is tested and the optimization engine "
                         "converges on an optimal solution."),
             ]),
-            html.P("Our optimization solution uses our <a href=”forecast.html>forecasts</a> of the number of ICU-cases "
-                   "in each region to optimize how many patients should be moved between the different regions. "
-                   "The user inputs to what extent different possible objectives (e.g. maximizing overcapacity in the "
-                   "healthcare system vs. minimizing long patient transports) should be considered. "),
+
+            html.P(children=[
+                "Our optimization solution uses our ",
+                html.A("forecasts", href='/forecasting'),
+                " of the number of ICU-cases "
+               "in each region to optimize how many patients should be moved between the different regions. "
+               "The user inputs to what extent different possible objectives (e.g. maximizing overcapacity in the "
+               "healthcare system vs. minimizing long patient transports) should be considered. ",
+            ]),
+
             html.Header(className="major special", children=[
                 html.P("The Technology"),
             ]),
-            html.P("The solution was built in python using the optimization engine "
-                   "<a href=” https://www.ibm.com/se-en/analytics/cplex-optimizer”>IBM CPLEX</a> and visualized through "
-                   "the open source plotting library <a href=” https://python-visualization.github.io/folium/”>"
-                   "Folium</a>. Together with the forecasting solution, it was isolated in a "
-                   "<a href=” https://www.docker.com/why-docker”>Docker container</a> and deployed on Microsoft Azure. "),
+            html.P(children=[
+                "The solution was built in python using the optimization engine ",
+                html.A("IBM CPLEX", href="https://www.ibm.com/se-en/analytics/cplex-optimizer"),
+                " and visualized through the open source plotting library ",
+                html.A("Folium", href="https://python-visualization.github.io/folium/"),
+                ". Together with the forecasting solution, it was isolated in a ",
+                html.A("Docker", href="https://www.docker.com/why-docker"),
+                " container and deployed on Microsoft Azure App Service."
+            ]),
             html.Header(className="major special", children=[
                 html.H2("Our optimization solution"),
                 html.P("About"),
@@ -278,9 +292,10 @@ layout_forecasting = html.Div(children=[
             ]),
             html.Blockquote('- "The most important part is that the healthcare system gets access to numbers of '
                             'how many will need intensive care treatment or similar."'),
-            html.P("Anders Tegnell, Swedish State Epidemiologist, "
-                   "<a href='https://omni.se/tegnell-prognoser-om-doda-ar-inte-det-viktigaste-for-oss/a/1n9jye'>to "
-                   "TT, April 4th 2020 </a> "),
+            html.P(children=[
+                "Anders Tegnell, Swedish State Epidemiologist, ",
+                html.A("to TT, April 4th 2020", href="https://omni.se/tegnell-prognoser-om-doda-ar-inte-det-viktigaste-for-oss/a/1n9jye"),
+            ]),
 
             html.Header(className="major special", children=[
                 html.P("The Problem"),
@@ -320,11 +335,15 @@ layout_forecasting = html.Div(children=[
             html.Header(className="major special", children=[
                 html.P("The Technology"),
             ]),
-            html.P("A time series is a series of data points listed in time order. Time series forecasting comprises "
+            html.P(children=["A time series is a series of data points listed in time order. Time series forecasting comprises "
                    "methods for forecasting future values based on previously observed values. This can be done using "
-                   "many different statistical models. We have used the widely popular XGBoost framework which is "
-                   "based on a gradient boosted tree model. The solution is implemented in python and visualized "
-                   "through the open source python framework Plotly. "),
+                   "many different statistical models. We have used the widely popular ",
+                html.A("XGBoost", href="https://xgboost.readthedocs.io/en/latest/"),
+                   " framework which is based on a gradient boosted tree model. The solution is implemented in python and visualized "
+                   "through the open source python framework ",
+                    html.A("Plotly", href="https://plotly.com/graphing-libraries/"),
+                    ".",
+            ]),
             html.Header(className="major special", children=[
                 html.H2("Our Forecasts"),
                 html.P("Number of needed ICU beds for COVID-19 patients, per region")
@@ -367,7 +386,6 @@ layout_forecasting = html.Div(children=[
     ],
     [
         Input('button_run', 'n_clicks'),
-        Input('input_date', 'value')
     ],
     state=[
         State(component_id='slider_w_overcap_abs', component_property='value'),
@@ -376,15 +394,16 @@ layout_forecasting = html.Div(children=[
         State(component_id='slider_w_km_trans', component_property='value')
     ]
 )
-def update_map(nbr_run_clicks, date, w_overcap_abs, w_overcap_rel, w_nb_trans, w_km_trans):
+def update_maps(nbr_run_clicks, w_overcap_abs, w_overcap_rel, w_nb_trans, w_km_trans):
     from src.optimization.main_optimization import run_optimization
+
     initial_map, final_map, final_map_wo_opt, allocation_plan = \
         run_optimization(
             w_overcap_abs=w_overcap_abs,
             w_overcap_rel=w_overcap_rel,
             w_nb_trans=w_nb_trans,
             w_km_trans=w_km_trans,
-            start_day=date
+            start_day=DATE
         )
 
     print(allocation_plan)
@@ -416,8 +435,7 @@ def update_map_output(btn_run, btn_current, btn_predicted, btn_optimized,
                       iframe_current, iframe_predicted, iframe_optimized):
     import datetime
 
-    date = '2020-04-03'     # TODO: Update to today
-    today = datetime.datetime.strptime(date, '%Y-%m-%d')
+    today = datetime.datetime.strptime(DATE, '%Y-%m-%d')
     forecasted_date = today + datetime.timedelta(days=3)
 
     changed_id = [p['prop_id'] for p in dash.callback_context.triggered][0]
@@ -453,9 +471,7 @@ def display_page(pathname):
     # if pathname == '/':
     #     return dash_dangerously_set_inner_html.DangerouslySetInnerHTML(f'{open("index.html", "r").read()}'),
     # elif pathname == '/forecasting':
-    #     return dash_dangerously_set_inner_html.DangerouslySetInnerHTML(f'{open("forecast.html", "r").read()}'),
-    # elif pathname == '/about':
-    #     return dash_dangerously_set_inner_html.DangerouslySetInnerHTML(f'{open("about.html", "r").read()}'),
+    #     return layout_forecasting
     # elif pathname == '/hack_the_crisis':
     #     return dash_dangerously_set_inner_html.DangerouslySetInnerHTML(f'{open("hack_the_crisis.html", "r").read()}'),
     # elif pathname == '/optimizing':
