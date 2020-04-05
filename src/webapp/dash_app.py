@@ -142,8 +142,8 @@ layout_optimizing = html.Div(children=[
         ]),
     ]),
 
-    html.Div(style={'height': '800px', 'margin-top': '50px', 'margin-bottom': '50px'}, children=[
-        html.Div(style={'width': '30%', 'display': 'inline-block', 'margin-left': '5%', 'margin-bottom': '5%'}, children=[
+    html.Div(style={'height': '800px', 'margin-bottom': '50px'}, children=[
+        html.Div(style={'width': '30%', 'display': 'inline-block', 'margin-left': '5%', 'margin-bottom': '30%'}, children=[
             html.H3('Set parameters'),
             html.Div(children=[
                 dcc.Markdown('Even distribution of undercapacity'),
