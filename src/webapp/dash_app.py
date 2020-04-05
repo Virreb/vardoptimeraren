@@ -104,9 +104,12 @@ layout_optimizing = html.Div(children=[
                 html.P("The Technology"),
             ]),
             html.P(children=[
-                "The solution was built in python using the optimization engine ",
+                "The solution shown here was built in python using the optimization engine ",
                 html.A("IBM CPLEX", href="https://www.ibm.com/se-en/analytics/cplex-optimizer"),
-                " and visualized through the open source plotting library ",
+                ", but we have also created a solution using the open source optimization engine ",
+                html.A("PuLP", href="https://coin-or.github.io/pulp/"),
+                ". This way, the solution is truly open source and engine-independent.",
+                " The solution is visualized through the open source plotting library ",
                 html.A("Folium", href="https://python-visualization.github.io/folium/"),
                 ". Together with the forecasting solution, it was isolated in a ",
                 html.A("Docker", href="https://www.docker.com/why-docker"),
@@ -136,7 +139,6 @@ layout_optimizing = html.Div(children=[
             html.Header(className="major special", children=[
                 html.P("Try it out!"),
             ]),
-            html.P("Delete margin here...")
         ]),
     ]),
 
