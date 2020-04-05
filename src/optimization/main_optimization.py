@@ -11,8 +11,8 @@ def run_optimization(start_day="2020-4-3",
                      path_to_static_geojson = "../../data/geocounties.geojson",
                      path_to_static_distances = "../../data/distances.pickle",
                      solve_time_limit = 60, #seconds
-                     w_overcap_abs = 1,
-                     w_overcap_rel = 1,
+                     w_undercap = 1,
+                     w_overcap = 1,
                      w_nb_trans = 1, 
                      w_km_trans = 1
                      ):
@@ -62,8 +62,8 @@ def run_optimization(start_day="2020-4-3",
     mdl = define_model_objective.define_max_overcapacity(mdl,current_df)
     mdl = define_model_objective.define_distance_measures(mdl)
     mdl = define_model_objective.summarize_objectives(mdl,
-                                                      w_overcap_abs = w_overcap_abs,
-                                                      w_overcap_rel = w_overcap_rel,
+                                                      w_undercap = w_undercap,
+                                                      w_overcap = w_overcap,
                                                       w_nb_trans = w_nb_trans, 
                                                       w_km_trans = w_km_trans)
     
