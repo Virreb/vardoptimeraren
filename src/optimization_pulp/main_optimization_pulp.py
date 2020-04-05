@@ -11,12 +11,10 @@ def run_optimization(start_day="2020-3-28",
                      path_to_static_geojson = "../../data/geocounties.geojson",
                      path_to_static_distances = "../../data/distances.pickle",
                      solve_time_limit = 60, #seconds
-                     w_total_undercapacity = 100,
-                     w_max_under = 100,
-                     w_max_over = 1,
-                     w_nb_patient_transfers = 1,
-                     w_km_patient_transfers = 0.01,
-                     w_nb_long_transfers = 0.01
+                     w_overcap_abs = 1,
+                     w_overcap_rel = 1,
+                     w_nb_trans = 1,
+                     w_km_trans = 1
                      ):
     
     # --------------------------------------------------------------------------- #
@@ -64,12 +62,10 @@ def run_optimization(start_day="2020-3-28",
     mdl = define_model_objective_pulp.define_max_overcapacity(mdl,current_df)
     mdl = define_model_objective_pulp.define_distance_measures(mdl)
     mdl = define_model_objective_pulp.summarize_objectives(mdl,
-                                                      w_total_undercapacity = w_total_undercapacity,
-                                                      w_max_under = w_max_under,
-                                                      w_max_over = w_max_over,
-                                                      w_nb_patient_transfers = w_nb_patient_transfers,
-                                                      w_km_patient_transfers = w_km_patient_transfers,
-                                                      w_nb_long_transfers = w_nb_long_transfers)
+                                                           w_overcap_abs = w_overcap_abs,
+                                                           w_overcap_rel = w_overcap_rel,
+                                                           w_nb_trans = w_nb_trans,
+                                                           w_km_trans = w_km_trans)
     
     # --------------------------------------------------------------------------- #
     # Solve model
