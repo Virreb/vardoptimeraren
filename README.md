@@ -31,7 +31,7 @@ regions in order to avoid local shortages and save lives.
 You need to have a installation of 
 [CPLEX](https://www.ibm.com/se-en/analytics/cplex-optimizer) 
 in order for the optimization to work. We will soon have an 
-implementation of the open-source optimization API  
+implementation of the open-source optimization API 
 [PuLP](https://coin-or.github.io/pulp/) ready aswel.
 
 ### Docker approach
@@ -49,7 +49,7 @@ and run it
 
 ### Local linux environment
 If you already have CPLEX installed locally. 
-Create a virtual environment and install the python packages listen in 
+Create a virtual environment and install the python packages listed in 
 requirements.txt
 
 Start the web server with:
@@ -59,7 +59,7 @@ Start the web server with:
 
 ## Push to container registry
 For Azure Container Registry: 
-Use credentials in the Azure Portal-Container Registry-Access keys
+Use credentials in the Azure Portal - Container Registry - Access keys
 
 > docker login CONTAINER-REGISTRY
 
