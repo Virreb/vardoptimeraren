@@ -177,8 +177,8 @@ layout_optimizing = html.Div(children=[
                 ),
             ]),
 
-            html.Br(),
-            dcc.Input(id="input_date", type="text", value='2020-04-03'),
+            # html.Br(),
+            # dcc.Input(id="input_date", type="text", value='2020-04-03'),
             html.Br(),
 
             html.Div(html.Button('Run', n_clicks=0, id="button_run"), style={'text-align': 'center'}),
@@ -197,14 +197,26 @@ layout_optimizing = html.Div(children=[
                  children=[
                      html.H3(id='map_title'),
                      html.Div(id='map_output', style={'height': '700px'}),
-                     html.Div(style={'display': 'inline-block', 'text-align': 'center', 'position': 'relative', 'margin-left': '10%'},
+                     html.Div(style={'display': 'inline-block', 'text-align': 'center', 'position': 'relative', 'margin-left': '7%'},
                               children=[
-                         html.Button('Current', n_clicks=0, id="button_map_current",
-                                     style={'display': 'inline-block', 'margin': '20px 5px%', 'position': 'relative'}),
-                         html.Button('Predicted', n_clicks=0, id="button_map_predicted",
-                                     style={'display': 'inline-block', 'margin': '20px 5px', 'position': 'relative'}),
-                         html.Button('Optimized', n_clicks=0, id="button_map_optimized",
-                                     style={'display': 'inline-block', 'margin': '20px 5px', 'position': 'relative'}),
+                         html.Button('Show current state', n_clicks=0, id="button_map_current",
+                                     style={'display': 'inline-block',
+                                            'margin': '20px 5px%',
+                                            'position': 'relative',
+                                            'font-size': '10px'}
+                                     ),
+                         html.Button('Show forecasted state', n_clicks=0, id="button_map_predicted",
+                                     style={'display': 'inline-block',
+                                            'margin': '20px 5px',
+                                            'position': 'relative',
+                                            'font-size': '10px'}
+                                     ),
+                         html.Button('Show suggested moves', n_clicks=0, id="button_map_optimized",
+                                     style={'display': 'inline-block',
+                                            'margin': '20px 5px',
+                                            'position': 'relative',
+                                            'font-size': '10px'}
+                                     ),
                      ])
                  ]),
     ]),
@@ -391,6 +403,7 @@ def update_map(nbr_run_clicks, date, w_overcap_abs, w_overcap_rel, w_nb_trans, w
         Output('map_output', 'children'),
     ],
     [
+        Input('button_run', 'n_clicks'),
         Input('button_map_current', 'n_clicks'),
         Input('button_map_predicted', 'n_clicks'),
         Input('button_map_optimized', 'n_clicks'),
@@ -398,14 +411,12 @@ def update_map(nbr_run_clicks, date, w_overcap_abs, w_overcap_rel, w_nb_trans, w
         Input('map_storing_predicted', 'children'),
         Input('map_storing_optimized', 'children'),
     ],
-    state=[State(component_id='input_date', component_property='value')]
 )
-def update_map_output(btn_current, btn_predicted, btn_optimized,
-                      iframe_current, iframe_predicted, iframe_optimized,
-                      date
-                      ):
+def update_map_output(btn_run, btn_current, btn_predicted, btn_optimized,
+                      iframe_current, iframe_predicted, iframe_optimized):
     import datetime
 
+    date = '2020-04-03'     # TODO: Update to today
     today = datetime.datetime.strptime(date, '%Y-%m-%d')
     forecasted_date = today + datetime.timedelta(days=3)
 
@@ -422,9 +433,13 @@ def update_map_output(btn_current, btn_predicted, btn_optimized,
         map_title = f'Optimized state for {forecasted_date.date()}'
         iframe_to_show = iframe_optimized
 
+    elif 'button_run' in changed_id:
+        map_title = f'Optimized state for {forecasted_date.date()}'
+        iframe_to_show = iframe_optimized
+
     else:
-        map_title = f'Current state for {today.date()}'
-        iframe_to_show = iframe_current
+        map_title = f'Optimized state for {forecasted_date.date()}'
+        iframe_to_show = iframe_optimized
 
     return map_title, iframe_to_show
 
@@ -435,23 +450,10 @@ def update_map_output(btn_current, btn_predicted, btn_optimized,
 def display_page(pathname):
 
     # use the first list of ifs when running from WSGI
-    if pathname == '/':
-        return dash_dangerously_set_inner_html.DangerouslySetInnerHTML(f'{open("index.html", "r").read()}'),
-    elif pathname == '/forecasting':
-        return dash_dangerously_set_inner_html.DangerouslySetInnerHTML(f'{open("forecast.html", "r").read()}'),
-    elif pathname == '/about':
-        return dash_dangerously_set_inner_html.DangerouslySetInnerHTML(f'{open("about.html", "r").read()}'),
-    elif pathname == '/hack_the_crisis':
-        return dash_dangerously_set_inner_html.DangerouslySetInnerHTML(f'{open("hack_the_crisis.html", "r").read()}'),
-    elif pathname == '/optimizing':
-        return layout_optimizing
-    else:
-        return html.H1('404, this page does not exist!')
-
     # if pathname == '/':
     #     return dash_dangerously_set_inner_html.DangerouslySetInnerHTML(f'{open("index.html", "r").read()}'),
     # elif pathname == '/forecasting':
-    #     return layout_forecasting
+    #     return dash_dangerously_set_inner_html.DangerouslySetInnerHTML(f'{open("forecast.html", "r").read()}'),
     # elif pathname == '/about':
     #     return dash_dangerously_set_inner_html.DangerouslySetInnerHTML(f'{open("about.html", "r").read()}'),
     # elif pathname == '/hack_the_crisis':
@@ -460,4 +462,15 @@ def display_page(pathname):
     #     return layout_optimizing
     # else:
     #     return html.H1('404, this page does not exist!')
+
+    if pathname == '/':
+        return dash_dangerously_set_inner_html.DangerouslySetInnerHTML(f'{open("src/webapp/index.html", "r").read()}'),
+    elif pathname == '/forecasting':
+        return layout_forecasting
+    elif pathname == '/hack_the_crisis':
+        return dash_dangerously_set_inner_html.DangerouslySetInnerHTML(f'{open("src/webapp/hack_the_crisis.html", "r").read()}'),
+    elif pathname == '/optimizing':
+        return layout_optimizing
+    else:
+        return html.H1('404, this page does not exist!')
 
