@@ -17,7 +17,7 @@ app.layout = html.Div([
 ])
 
 # TODO: Update this
-DATE = '2029-04-03'
+DATE = '2020-04-03'
 
 layout_optimizing = html.Div(children=[
     # Not sure if this block is needed
