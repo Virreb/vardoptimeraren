@@ -151,6 +151,7 @@ layout_optimizing = html.Div(children=[
         # TODO: Fix styling and positioning of buttons
         html.Div(style={'width': '50%', 'height': '100%', 'display': 'inline-block', 'margin-left': '10%'},
                  children=[
+                     html.H2(id='map_title'),
                      html.Div(id='map_output', style={'height': '700px'}),
                      html.Div(style={'display': 'inline-block', 'text-align': 'center', 'position': 'relative', 'margin-left': '7%'},
                               children=[
