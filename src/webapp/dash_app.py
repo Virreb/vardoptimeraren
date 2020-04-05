@@ -40,22 +40,28 @@ layout_optimizing = html.Div(children=[
     ]),
     html.A(href='#menu', className='navPanelToggle', children=html.Span(className='fa fa-bars')),
 
-    #First scetion
+    # First section
     html.Section(id="main", className="wrapper", children=[
         html.Div(className="container", children=[
             html.Header(className="major special", children=[
                 html.H2("Optimizing"),
                 html.P("The problem")
             ]),
-            html.P("According to <a href=” https://omni.se/iva-patienter-har-nu-borjat-flyttas-mellan-regionerna/a/50gb1O”>Sveriges Radio</a>, "
-                   "regions have already started to reallocate patients and the Swedish government has given "
-                   "the national board of Health and Welfare (Socialstyrelsen) "
-                   "<a href=” https://www.dn.se/nyheter/sverige/skyddsmaterial-ska-flyttas-mellan-regionerna-historiskt-beslut/ “> "
-                   "the mandate to also reallocate protective gears and other resources</a> between the regions. "),
 
-            #Link 1:
-            #html.A("Sveriges Radio", href="https://omni.se/iva-patienter-har-nu-borjat-flyttas-mellan-regionerna/a/50gb1O"),
-            #html.Br(),
+            html.P(children=[
+                "According to ",
+                html.A('Sveriges Radio ',
+                       href='https://omni.se/iva-patienter-har-nu-borjat-flyttas-mellan-regionerna/a/50gb1O'),
+                "regions have already started to reallocate patients and the Swedish government has given "
+                "the national board of Health and Welfare (Socialstyrelsen) ",
+                html.A('the mandate to also reallocate protective gears and other resources',
+                       href='https://www.dn.se/nyheter/sverige/skyddsmaterial-ska-flyttas-mellan-regionerna-historiskt-beslut/'),
+                " between the regions. "
+                ]),
+
+            # Link 1:
+            # html.A("Sveriges Radio", href="https://omni.se/iva-patienter-har-nu-borjat-flyttas-mellan-regionerna/a/50gb1O"),
+            # html.Br(),
             html.P("Even with perfect information about the future spread of the disease, planning how this reallocation "
                    "should be pursued is far from trivial. Many different kinds of resources may need to be moved and "
                    "different objectives will need to be weighed against each other (e.g. overcapacity vs. cost for "
@@ -123,86 +129,83 @@ layout_optimizing = html.Div(children=[
         html.Div(style={'width': '30%', 'display': 'inline-block', 'margin-left': '5%', 'margin-bottom': '5%'}, children=[
             html.H3('Set parameters'),
             html.Div(children=[
-                dcc.Markdown('w_max_under'),
+                dcc.Markdown('Absolute overcapacity'),
                 dcc.Slider(
-                    id='wmax_under',
-                    min=0,
-                    max=200,
-                    step=0.5,
-                    value=100,
-                ),
-            ]),
-
-            html.Div(children=[
-                dcc.Markdown('w_max_over'),
-                dcc.Slider(
-                    id='wmax_over',
-                    min=0,
-                    max=20,
-                    step=0.5,
-                    value=1,
-                ),
-            ]),
-
-            html.Div(children=[
-                dcc.Markdown('w_total_undercapacity'),
-                dcc.Slider(
-                    id='w_total_undercapacity',
-                    min=0,
-                    max=200,
-                    step=0.5,
-                    value=100,
-                ),
-            ]),
-
-            html.Div(children=[
-                dcc.Markdown('w_nb_long_transfers'),
-                dcc.Slider(
-                    id='w_nb_long_transfers',
-                    min=0,
-                    max=1,
-                    step=0.1,
-                    value=0.01,
-                ),
-            ]),
-
-            html.Div(children=[
-                dcc.Markdown('w_km_patient_transfers'),
-                dcc.Slider(
-                    id='w_km_patient_transfers',
-                    min=0,
-                    max=1,
-                    step=0.1,
-                    value=0.01,
-                ),
-            ]),
-
-            html.Div(children=[
-                dcc.Markdown('w_nb_patient_transfers'),
-                dcc.Slider(
-                    id='w_nb_patient_transfers',
+                    id='slider_w_overcap_abs',
                     min=0,
                     max=10,
-                    step=0.5,
-                    value=1,
+                    step=0.1,
+                    value=5,
+                    marks={0: '0', 10: '10'}
                 ),
             ]),
-            html.Div(style={'text-align': 'center'}, children=[
-                dcc.Loading(    # TODO: loading does not work :(
-                    id="loading",
-                    type="circle",
-                    children=html.Button('Kör', n_clicks=0, id="optimize_button"),
+
+            html.Div(children=[
+                dcc.Markdown('Relative overcapacity'),
+                dcc.Slider(
+                    id='slider_w_overcap_rel',
+                    min=0,
+                    max=10,
+                    step=0.1,
+                    value=5,
+                    marks={0: '0', 10: '10'}
                 ),
             ]),
-            html.Br()
+
+            html.Div(children=[
+                dcc.Markdown('Total number of transfers'),
+                dcc.Slider(
+                    id='slider_w_nb_trans',
+                    min=0,
+                    max=10,
+                    step=0.1,
+                    value=5,
+                    marks={0: '0', 10: '10'}
+                ),
+            ]),
+
+            html.Div(children=[
+                dcc.Markdown('Total length (km) of transfers'),
+                dcc.Slider(
+                    id='slider_w_km_trans',
+                    min=0,
+                    max=10,
+                    step=0.1,
+                    value=5,
+                    marks={0: '0', 10: '10'}
+                ),
+            ]),
+
+            html.Br(),
+            dcc.Input(id="input_date", type="text", value='2020-04-03'),
+            html.Br(),
+
+            html.Div(html.Button('Run', n_clicks=0, id="button_run"), style={'text-align': 'center'}),
+            html.Br(),
+
+            dcc.Loading(
+                id="loading",
+                type="circle",
+                children=' '
+            ),
+            html.Br(),
         ]),
 
-        html.Div(id='map_output', style={'width': '50%',
-                                         'height': '100%',
-                                         'display': 'inline-block',
-                                         'margin-left': '10%'
-                                         }),
-
+        # TODO: Fix styling and positioning of buttons
+        html.Div(style={'width': '50%', 'height': '100%', 'display': 'inline-block', 'margin-left': '10%'},
+                 children=[
+                     html.H3(id='map_title'),
+                     html.Div(id='map_output', style={'height': '700px'}),
+                     html.Div(style={'display': 'inline-block', 'text-align': 'center', 'position': 'relative', 'margin-left': '10%'},
+                              children=[
+                         html.Button('Current', n_clicks=0, id="button_map_current",
+                                     style={'display': 'inline-block', 'margin': '20px 5px%', 'position': 'relative'}),
+                         html.Button('Predicted', n_clicks=0, id="button_map_predicted",
+                                     style={'display': 'inline-block', 'margin': '20px 5px', 'position': 'relative'}),
+                         html.Button('Optimized', n_clicks=0, id="button_map_optimized",
+                                     style={'display': 'inline-block', 'margin': '20px 5px', 'position': 'relative'}),
+                     ])
+                 ]),
     ]),
 
     html.Footer(id='footer', children=[
@@ -222,34 +225,96 @@ layout_optimizing = html.Div(children=[
                 ]),
             ])
         ])
-    ])
+    ]),
+
+    # hiddens divs for storing maps
+    html.Div(id='map_storing_current', style={'display': 'None'}),
+    html.Div(id='map_storing_predicted', style={'display': 'None'}),
+    html.Div(id='map_storing_optimized', style={'display': 'None'}),
 ])
 
 
 @app.callback(
-    Output('map_output', 'children'),
-    [Input('optimize_button', 'n_clicks')],
-    state=[State(component_id='wmax_under', component_property='value'),
-           State(component_id='wmax_over', component_property='value'),
-           State(component_id='w_total_undercapacity', component_property='value'),
-           State(component_id='w_nb_patient_transfers', component_property='value'),
-           State(component_id='w_km_patient_transfers', component_property='value'),
-           State(component_id='w_nb_long_transfers', component_property='value')]
+    [
+        Output('map_storing_current', 'children'),
+        Output('map_storing_predicted', 'children'),
+        Output('map_storing_optimized', 'children'),
+        Output('loading', 'children'),
+    ],
+    [
+        Input('button_run', 'n_clicks'),
+        Input('input_date', 'value')
+    ],
+    state=[
+        State(component_id='slider_w_overcap_abs', component_property='value'),
+        State(component_id='slider_w_overcap_rel', component_property='value'),
+        State(component_id='slider_w_nb_trans', component_property='value'),
+        State(component_id='slider_w_km_trans', component_property='value')
+    ]
 )
-def update_map(nbr_clicks, wmax_under, wmax_over, w_total_undercapacity, w_nb_patient_transfers, w_km_patient_transfers,
-               w_nb_long_transfers):
+def update_map(nbr_run_clicks, date, w_overcap_abs, w_overcap_rel, w_nb_trans, w_km_trans):
     from src.optimization.main_optimization import run_optimization
-
-    initial_map, final_map, allocation_plan = run_optimization(w_max_under=wmax_under, w_max_over=wmax_over,
-                                                               w_total_undercapacity=w_total_undercapacity,
-                                                               w_nb_patient_transfers=w_nb_patient_transfers,
-                                                               w_km_patient_transfers=w_km_patient_transfers,
-                                                               w_nb_long_transfers=w_nb_long_transfers)
+    initial_map, final_map, final_map_wo_opt, allocation_plan = \
+        run_optimization(
+            w_overcap_abs=w_overcap_abs,
+            w_overcap_rel=w_overcap_rel,
+            w_nb_trans=w_nb_trans,
+            w_km_trans=w_km_trans,
+            start_day=date
+        )
 
     print(allocation_plan)
-    html_string = final_map.get_root().render()
+    iframe_current = html.Iframe(srcDoc=initial_map.get_root().render(), width='100%', height='100%')
+    iframe_predicted = html.Iframe(srcDoc=final_map_wo_opt.get_root().render(), width='100%', height='100%')
+    iframe_optimized = html.Iframe(srcDoc=final_map.get_root().render(), width='100%', height='100%')
 
-    return html.Iframe(srcDoc=html_string, width='100%', height='100%')
+    value_to_loading = ''
+
+    return iframe_current, iframe_predicted, iframe_optimized, value_to_loading
+
+
+@app.callback(
+    [
+        Output('map_title', 'children'),
+        Output('map_output', 'children'),
+    ],
+    [
+        Input('button_map_current', 'n_clicks'),
+        Input('button_map_predicted', 'n_clicks'),
+        Input('button_map_optimized', 'n_clicks'),
+        Input('map_storing_current', 'children'),
+        Input('map_storing_predicted', 'children'),
+        Input('map_storing_optimized', 'children'),
+    ],
+    state=[State(component_id='input_date', component_property='value')]
+)
+def update_map_output(btn_current, btn_predicted, btn_optimized,
+                      iframe_current, iframe_predicted, iframe_optimized,
+                      date
+                      ):
+    import datetime
+
+    today = datetime.datetime.strptime(date, '%Y-%m-%d')
+    forecasted_date = today + datetime.timedelta(days=3)
+
+    changed_id = [p['prop_id'] for p in dash.callback_context.triggered][0]
+    if 'button_map_current' in changed_id:
+        map_title = f'Current state for {today.date()}'
+        iframe_to_show = iframe_current
+
+    elif 'button_map_predicted' in changed_id:
+        map_title = f'Forecasted state for {forecasted_date.date()}'
+        iframe_to_show = iframe_predicted
+
+    elif 'button_map_optimized' in changed_id:
+        map_title = f'Optimized state for {forecasted_date.date()}'
+        iframe_to_show = iframe_optimized
+
+    else:
+        map_title = f'Current state for {today.date()}'
+        iframe_to_show = iframe_current
+
+    return map_title, iframe_to_show
 
 
 # Update the index
@@ -258,18 +323,18 @@ def update_map(nbr_clicks, wmax_under, wmax_over, w_total_undercapacity, w_nb_pa
 def display_page(pathname):
 
     # use the first list of ifs when running from WSGI
-     if pathname == '/':
-         return dash_dangerously_set_inner_html.DangerouslySetInnerHTML(f'{open("index.html", "r").read()}'),
-     elif pathname == '/forecasting':
-         return dash_dangerously_set_inner_html.DangerouslySetInnerHTML(f'{open("forecast.html", "r").read()}'),
-     elif pathname == '/about':
-         return dash_dangerously_set_inner_html.DangerouslySetInnerHTML(f'{open("about.html", "r").read()}'),
-     elif pathname == '/hack_the_crisis':
-         return dash_dangerously_set_inner_html.DangerouslySetInnerHTML(f'{open("hack_the_crisis.html", "r").read()}'),
-     elif pathname == '/optimizing':
-         return layout_optimizing
-     else:
-         return html.H1('404, this page does not exist!')
+    if pathname == '/':
+        return dash_dangerously_set_inner_html.DangerouslySetInnerHTML(f'{open("index.html", "r").read()}'),
+    elif pathname == '/forecasting':
+        return dash_dangerously_set_inner_html.DangerouslySetInnerHTML(f'{open("forecast.html", "r").read()}'),
+    elif pathname == '/about':
+        return dash_dangerously_set_inner_html.DangerouslySetInnerHTML(f'{open("about.html", "r").read()}'),
+    elif pathname == '/hack_the_crisis':
+        return dash_dangerously_set_inner_html.DangerouslySetInnerHTML(f'{open("hack_the_crisis.html", "r").read()}'),
+    elif pathname == '/optimizing':
+        return layout_optimizing
+    else:
+        return html.H1('404, this page does not exist!')
 
     #if pathname == '/':
     #    return dash_dangerously_set_inner_html.DangerouslySetInnerHTML(f'{open("src/webapp/index.html", "r").read()}'),
