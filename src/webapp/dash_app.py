@@ -75,8 +75,9 @@ layout_optimizing = html.Div(children=[
             html.Ol(children=[
                 html.Li("The problem is formulated mathematically"),
                 html.Li("An objective function is formulated. In reality, this often means deciding how to weigh different objectives against each other. "),
-                html.Li("Boundary conditions are formulated (No region can have less than 0 patients, ..?HELP TILDA)"),
-                html.Li("A large subset of the possible solution space is tested and the optimization engine "
+                html.Li("Boundary conditions are formulated (e.g. no region can have less than 0 patients, and nor can 1.367 patients be sent from one "
+			"region to another but the solution has to be integer-valued)."),
+                html.Li("A large subset of the feasible solution space is tested and the optimization engine "
                         "converges on an optimal solution."),
             ]),
             html.P("Our optimization solution uses our <a href=”forecast.html>forecasts</a> of the number of ICU-cases "
@@ -107,10 +108,10 @@ layout_optimizing = html.Div(children=[
                    "when searching for an optimal solution, whereas a value of 10 (all the way to the right means "
                    "that the solver will optimize mainly to meet that criteria. The four criteria are:"),
             html.Ol(children=[
-                html.Li(children=[html.Strong("Maximum Undercapacity"), " means blablabla"]),
-                html.Li(children=[html.Strong("TILDA"), " HJÄLP"]),
-                html.Li(children=[html.Strong("GÄRNA TILL"), " MED ATT"]),
-                html.Li(children=[html.Strong("FYLLA I"), " DESSA"]),
+                html.Li(children=[html.Strong("Even distribution of absolute capacity"), " means that the optimization engine tries to find a solution where absolute surplus capacity is evenly distribution among regions."]),
+                html.Li(children=[html.Strong("Even distribution of relative capacity"), " means that the optimization engine tries to find a solution where relative surplus capacity is evenly distribution among regions."]),
+                html.Li(children=[html.Strong("Minimizing the number of patient transfers"), " means that the optimization engine tries to find a solution where the number of patients that are transferred is minimized."]),
+                html.Li(children=[html.Strong("Minimizing the total sum of transfer kilometers"), " means that the optimization engine tries to find a solution where the total sum of transfer kilometers is minimized."]),
             ]),
             html.Header(className="major special", children=[
                 html.P("Try it out!"),
