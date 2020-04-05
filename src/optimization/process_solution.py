@@ -160,10 +160,10 @@ def plot_final_state_without_opt(mdl,current_df,geojson):
         folium.Circle(
             radius= 7000 + row.Final*200,
             location=[row.Lat, row.Long],
-            popup=folium.Popup('<b>'+row.Region+'</b><br><br>From '+str(row.IVA)+' to '+str(row.FinalWithoutOpt)+\
-                               ' IVA<br>Organic growth: '+str(row.OrganicGrowth)+\
+            popup=folium.Popup('<b>'+row.Region+'</b><br><br>From '+str(int(row.IVA))+' to '+str(int(row.FinalWithoutOpt))+\
+                               ' IVA<br>Organic growth: '+str(int(row.OrganicGrowth))+\
                                '<br>Allocation: 0'+\
-                               '<br>Capacity: '+str(row.Capacity),
+                               '<br>Capacity: '+str(int(row.Capacity)),
                                max_width=450,min_width=150),
             color=color,
             fill=True,
@@ -322,10 +322,10 @@ def plot_final_state(mdl,current_df,geojson):
         folium.Circle(
             radius= 7000 + row.Final*200,
             location=[row.Lat, row.Long],
-            popup=folium.Popup('<b>'+row.Region+'</b><br><br>From '+str(row.IVA)+' to '+str(row.Final)+\
-                               ' IVA<br>Organic growth: '+str(row.OrganicGrowth)+\
-                               '<br>Allocation: '+str(row.Allocation)+\
-                               '<br>Capacity: '+str(row.Capacity),
+            popup=folium.Popup('<b>'+row.Region+'</b><br><br>From '+str(int(row.IVA))+' to '+str(int(row.Final))+\
+                               ' IVA<br>Organic growth: '+str(int(row.OrganicGrowth))+\
+                               '<br>Allocation: '+str(int(row.Allocation))+\
+                               '<br>Capacity: '+str(int(row.Capacity)),
                                max_width=450,min_width=150),
             color=color,
             fill=True,

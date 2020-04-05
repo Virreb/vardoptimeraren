@@ -99,13 +99,13 @@ def plot_initial_state(current_df,geojson):
             radius= 7000 + row.IVA*200,
             location=[row.Lat, row.Long],
             popup=folium.Popup('<b>'+row.Region+'</b><br>'+\
-                               '<br>Patienter: '+str(row.IVA)+\
-                               '<br>Kapacitet: '+str(row.Capacity),
+                               '<br>Patients: '+str(int(row.IVA))+\
+                               '<br>Capacity: '+str(int(row.Capacity)),
                                max_width=450,min_width=150),
             color=color,
             fill=True,
             fill_color=color,
-            tooltip="Klicka här!",
+            tooltip="Click here!",
         ).add_to(m)
         
     from branca.element import Template, MacroElement
