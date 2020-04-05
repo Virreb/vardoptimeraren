@@ -299,8 +299,17 @@ layout_forecasting = html.Div(children=[
     # First section
     html.Section(id="main", className="wrapper", children=[
         html.Div(className="container", children=[
+        html.Header(className="major special", children=[
+                html.H2("Our Forecasts"),
+                html.P("Number of needed ICU beds for COVID-19 patients, per region")
+            ]),
+            html.P("We have created machine learning models for forecasting the number of needed ICU beds for COVID-19 patients in all Swedish regions."),
+            html.P("Please note that since we have found no publically available data about how many ICU beds are occupied in the different regions, "
+                   " these forecasts depend on assumptions regarding how long the patients stay in the ICU. If some numbers"
+                   " look unintuitive, this is likely the reason."),
+            dcc.Graph(figure=forecast_figure),
             html.Header(className="major special", children=[
-                html.H2("Forecasting"),
+                html.H2("About Forecasting"),
             ]),
             html.Blockquote('- "The most important part is that the healthcare system gets access to numbers of '
                             'how many will need intensive care treatment or similar."'),
@@ -356,14 +365,7 @@ layout_forecasting = html.Div(children=[
                     html.A("Plotly", href="https://plotly.com/graphing-libraries/"),
                     ".",
             ]),
-            html.Header(className="major special", children=[
-                html.H2("Our Forecasts"),
-                html.P("Number of needed ICU beds for COVID-19 patients, per region")
-            ]),
-            html.P("Please note that since we have found no publically available data about how many ICU beds are occupied in the different regions, "
-                   " these forecasts depend on assumptions regarding how long the patients stay in the ICU. If some numbers"
-                   " look unintuitive, this is likely the reason."),
-            dcc.Graph(figure=forecast_figure)
+
         ]),
     ]),
 
@@ -479,26 +481,26 @@ def update_map_output(btn_run, btn_current, btn_predicted, btn_optimized,
               [Input('url', 'pathname')])
 def display_page(pathname):
 
-    # use the first list of ifs when running from WSGI
-    # if pathname == '/':
-    #     return dash_dangerously_set_inner_html.DangerouslySetInnerHTML(f'{open("index.html", "r").read()}'),
-    # elif pathname == '/forecasting':
-    #     return layout_forecasting
-    # elif pathname == '/hack_the_crisis':
-    #     return dash_dangerously_set_inner_html.DangerouslySetInnerHTML(f'{open("hack_the_crisis.html", "r").read()}'),
-    # elif pathname == '/optimizing':
-    #     return layout_optimizing
-    # else:
-    #     return html.H1('404, this page does not exist!')
+     #use the first list of ifs when running from WSGI
+     if pathname == '/':
+         return dash_dangerously_set_inner_html.DangerouslySetInnerHTML(f'{open("index.html", "r").read()}'),
+     elif pathname == '/forecasting':
+         return layout_forecasting
+     elif pathname == '/hack_the_crisis':
+         return dash_dangerously_set_inner_html.DangerouslySetInnerHTML(f'{open("hack_the_crisis.html", "r").read()}'),
+     elif pathname == '/optimizing':
+         return layout_optimizing
+     else:
+         return html.H1('404, this page does not exist!')
 
-    if pathname == '/':
-        return dash_dangerously_set_inner_html.DangerouslySetInnerHTML(f'{open("src/webapp/index.html", "r").read()}'),
-    elif pathname == '/forecasting':
-        return layout_forecasting
-    elif pathname == '/hack_the_crisis':
-        return dash_dangerously_set_inner_html.DangerouslySetInnerHTML(f'{open("src/webapp/hack_the_crisis.html", "r").read()}'),
-    elif pathname == '/optimizing':
-        return layout_optimizing
-    else:
-        return html.H1('404, this page does not exist!')
+    #if pathname == '/':
+    #    return dash_dangerously_set_inner_html.DangerouslySetInnerHTML(f'{open("src/webapp/index.html", "r").read()}'),
+    #elif pathname == '/forecasting':
+    #    return layout_forecasting
+    #elif pathname == '/hack_the_crisis':
+    #    return dash_dangerously_set_inner_html.DangerouslySetInnerHTML(f'{open("src/webapp/hack_the_crisis.html", "r").read()}'),
+    #elif pathname == '/optimizing':
+    #    return layout_optimizing
+    #else:
+    #    return html.H1('404, this page does not exist!')
 

@@ -5,7 +5,7 @@ def main():
 	import plotly.graph_objects as go
 	import plotly.offline as po
 
-	df = pd.read_csv('src/forecast/plotly_data.csv')
+	df = pd.read_csv('../forecast/plotly_data.csv')
 	df = df.rename(columns={'iva_corrected': 'iva'})
 	df['value'] = [df.iva.iloc[i] if not math.isnan(df.iva.iloc[i]) else df.predicted.iloc[i] for i in range(0, df.shape[0])]
 	df['color'] = ['#7DDCDC' if not math.isnan(df.iva.iloc[i]) else '#FE465B' for i in range(0, df.shape[0])]
